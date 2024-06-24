@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation"
 import useAutenticacao from "@/data/hooks/useAutenticacao"
 import useFormAutenticacao from "@/data/hooks/useFormAutenticacao"
 import Mensagens from "@/components/shared/Mensagens"
+import Image from "next/image"
 
 interface TextInputProps {
   placeholder: string;
@@ -41,6 +42,10 @@ export default function Autenticacao() {
     <div className=" min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/background.jpg')" }}>
       <div className="flex flex-col justify-center items-center gap-5 h-screen ">
         <div className="flex flex-col gap-1 w-[24rem] bg-neutral-900/80 p-9 rounded-md border border-zinc-700">
+          <div className="flex justify-center items-center">
+            <Image width={250} height={250} src="/logo.svg" alt="logo" />
+          </div>
+
           <h1 className="text-xl text-center p-4 self-center text-white">
             {modo === "login" ? "Entre com a sua conta" : "Cadastre-se na plataforma"}
           </h1>

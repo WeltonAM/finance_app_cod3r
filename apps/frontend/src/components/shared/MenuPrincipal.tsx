@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import useAutenticacao from "@/data/hooks/useAutenticacao";
 import MenuUsuario from "./MenuUsuario";
 import Logo from "./Logo";
+import Image from "next/image";
 
 export default function MenuPrincipal(props: any) {
     const { usuarioAutenticado } = useAutenticacao();
@@ -55,7 +56,15 @@ export default function MenuPrincipal(props: any) {
                 w-[100px] md:h-[100px] 
             ">
                 <div className="flex items-center justify-between cursor-pointer" onClick={toggleMenuUsuario}>
-                    <img src="/avatar.png" alt={`${usuarioAutenticado!.nome} avatar`} className="w-10 h-10 rounded-full" />
+                    <div className="relative w-14 h-14 border-2 border-white rounded-full overflow-hidden">
+                        <Image
+                            width={100}
+                            height={100}
+                            src="/logo.svg"
+                            alt={`${usuarioAutenticado!.nome} avatar`}
+                            className="object-cover w-full h-full"
+                        />
+                    </div>
 
                     {isMenuUsuarioOpen && (
                         <div

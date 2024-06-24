@@ -1,7 +1,8 @@
 {
-  "name": "core",
+  "name": "adapters",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "./src/index.ts",
   "scripts": {
     "test": "jest --watchAll --collectCoverage"
   },
@@ -9,9 +10,7 @@
   "author": "Welton Almeida de Matos",
   "license": "ISC",
   "devDependencies": {
-    "@faker-js/faker": "^8.1.0",
     "@types/jest": "^29.5.2",
-    "@types/uuid": "^9.0.4",
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",
     "jest": "^29.5.0",
@@ -20,6 +19,6 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "uuid": "^9.0.1"
+    "core": "*"
   }
 }

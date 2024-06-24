@@ -1,4 +1,4 @@
-import { RegistrarUsuario } from "../../src/user";
+import { RegistrarUsuario } from "../../src/usuario";
 import ProvedorCriptografiaMock from "../mock/ProvedorCriptografiaMock";
 import RepositorioUsuarioMock from "../mock/RepositorioUsuarioMock";
 import Teste from "../util/Teste";

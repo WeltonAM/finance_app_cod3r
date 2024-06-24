@@ -2,7 +2,7 @@ import ProvedorCriptografiaMock from "../mock/ProvedorCriptografiaMock";
 import RepositorioUsuarioMock from "../mock/RepositorioUsuarioMock";
 import Teste from "../util/Teste";
 import UsuarioBuilder from "../data/UsuarioBuilder";
-import { LoginUsuario } from "../../src/user";
+import { LoginUsuario } from "../../src/usuario";
 
 test("Deve retornar Usuário válido", async () => {
   const email = "existe@email.com.br";

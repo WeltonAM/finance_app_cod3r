@@ -1,4 +1,4 @@
-import { Usuario, UsuarioProps } from "../../src/user";
+import { Usuario, UsuarioProps } from "../../src/usuario";
 import { faker } from "@faker-js/faker";
 
 export default class UsuarioBuilder {

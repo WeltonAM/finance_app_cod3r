@@ -1,4 +1,4 @@
-import { RepositorioUsuario, Usuario } from "../../src/user";
+import { RepositorioUsuario, Usuario } from "../../src/usuario";
 
 export default class RepositorioUsuarioMock implements RepositorioUsuario {
   constructor(private readonly usuarios: Usuario[] = []) {}

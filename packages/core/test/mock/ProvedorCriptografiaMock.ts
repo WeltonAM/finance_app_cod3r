@@ -1,4 +1,4 @@
-import { ProvedorCriptografia } from "../../src/user";
+import { ProvedorCriptografia } from "../../src/usuario";
 
 export default class ProvedorCriptografiaMock implements ProvedorCriptografia {
   criptografar(_: string): string {

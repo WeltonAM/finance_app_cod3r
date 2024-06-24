@@ -1,7 +1,8 @@
 {
   "name": "core",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "./src/index.ts",
   "scripts": {
     "test": "jest --watchAll --collectCoverage"
   },
@@ -16,7 +17,7 @@
     "eslint-config-custom": "*",
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0",
-    "tsconfig": "*",
+    "typescript-config": "*",
     "typescript": "^4.5.2"
   },
   "dependencies": {

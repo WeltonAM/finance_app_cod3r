@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function seed() {
   const usuario = {
     id: faker.string.uuid(),
-    nome: "Visitante",
+    nome: "Visitante Admin",
     email: "visitante@mail.com",
     // password: #Senha123
     senha: "$2b$10$9LQTRK3LRzIddKYW2C4MTelydFzk5Ys4JoROPajNqvYshhrn1PRa6",

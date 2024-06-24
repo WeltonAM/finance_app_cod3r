@@ -9,9 +9,9 @@ export default function MenuUsuario() {
 
     return (
         <div className="text-left">
-            <div className="origin-top-right absolute right-0 w-48 rounded-md shadow-xl bg-zinc-800 font-inter">
+            <div className="absolute w-48 rounded-md shadow-xl bg-zinc-800 font-inter">
                 <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                    <div className="block px-4 py-2 text-sm ml-5 font-semibold text-white" role="menuitem">
+                    <div className="block py-2 text-sm ml-3 font-semibold text-white" role="menuitem">
                         Minha Conta
                     </div>
 

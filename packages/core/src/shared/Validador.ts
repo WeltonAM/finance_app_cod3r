@@ -36,6 +36,11 @@ export default class Validador {
       : this.adicionarErro(erro);
   }
 
+  naoNegativo(erro: string = "VALOR_NEGATIVO"): Validador {
+    const valor = parseFloat(this.valor);
+    return !isNaN(valor) && valor >= 0 ? this : this.adicionarErro(erro);
+  }
+
   naoVazio(erro: string = "VAZIO"): Validador {
     const validador = this.naoNulo(erro);
     if (Array.isArray(validador.valor)) {
@@ -140,6 +145,25 @@ export default class Validador {
 
   tipoInvalido(erro: string): Validador {
     return this.adicionarErro(erro);
+  }
+
+  dataValida(erro: string = "DATA_INVALIDA"): Validador {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test(this.valor) ? this : this.adicionarErro(erro);
+  }
+
+  statusValido(erro: string = "STATUS_INVALIDO"): Validador {
+    const valoresValidos = ["consolidado", "cancelado", "pendente"];
+    return valoresValidos.includes(this.valor)
+      ? this
+      : this.adicionarErro(erro);
+  }
+
+  tipoValido(erro: string = "TIPO_INVALIDO"): Validador {
+    const valoresValidos = ["receita", "despesa"];
+    return valoresValidos.includes(this.valor)
+      ? this
+      : this.adicionarErro(erro);
   }
 
   adicionarErro(codigoOuErro: string | ErroValidacao): Validador {

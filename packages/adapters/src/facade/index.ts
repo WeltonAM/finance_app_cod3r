@@ -1,5 +1,5 @@
-import { UsuarioDTO } from "../dto"
+import { UsuarioDTO } from "../dto";
 
 export class CoreFacade {
-    constructor(private usuario: UsuarioDTO | null) {}
+  constructor(private usuario: UsuarioDTO | null) {}
 }

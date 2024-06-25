@@ -15,6 +15,21 @@ async function seed() {
 
   await prisma.usuario.create({ data: usuario });
 
+  const financeiros = Array.from({ length: 10 }, () => ({
+    id: faker.string.uuid(),
+    tipo: faker.helpers.arrayElement(["despesa", "receita"]),
+    valor: faker.finance.amount(),
+    status: faker.helpers.arrayElement([
+      "pendente",
+      "consolidado",
+      "cancelado",
+    ]),
+    data: faker.date.past().toISOString(),
+    descricao: faker.lorem.sentence(),
+  }));
+
+  await prisma.financeiro.createMany({ data: financeiros });
+
   console.log("Seed data has been created successfully");
 }
 

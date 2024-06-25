@@ -7,9 +7,9 @@ export default class FinanceiroBuilder {
 
   static criar() {
     return new FinanceiroBuilder({
-      tipo: "despesa",
+      tipo: "despesa" as TipoType,
       valor: "10",
-      status: "pendente",
+      status: "pendente" as StatusType,
       data: new Date().toDateString(),
       descricao: "Descrição padrão",
     });
@@ -20,7 +20,7 @@ export default class FinanceiroBuilder {
     return this;
   }
 
-  comTipo(tipo: string): FinanceiroBuilder {
+  comTipo(tipo: TipoType): FinanceiroBuilder {
     this.props.tipo = tipo as TipoType;
     return this;
   }

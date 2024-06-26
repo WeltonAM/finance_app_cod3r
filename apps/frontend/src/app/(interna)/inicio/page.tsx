@@ -95,8 +95,8 @@ export default function Inicio(props: any) {
                             </p>
                         </div>
                     </div>
-                )}
-
+                )
+            }
         </div>
     );
 }

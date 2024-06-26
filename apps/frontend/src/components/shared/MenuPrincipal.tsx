@@ -61,6 +61,7 @@ export default function MenuPrincipal(props: any) {
                             width={100}
                             height={100}
                             src="/logo.svg"
+                            priority={true}
                             alt={`${usuarioAutenticado!.nome} avatar`}
                             className="object-cover w-full h-full"
                         />

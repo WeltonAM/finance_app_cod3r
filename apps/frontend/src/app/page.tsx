@@ -4,6 +4,7 @@ import useAutenticacao from "@/data/hooks/useAutenticacao"
 import useFormAutenticacao from "@/data/hooks/useFormAutenticacao"
 import Mensagens from "@/components/shared/Mensagens"
 import Image from "next/image"
+import { useEffect } from "react"
 
 interface TextInputProps {
   placeholder: string;
@@ -33,10 +34,11 @@ export default function Autenticacao() {
     }
   }
 
-  if (usuarioAutenticado) {
-    router.push("/inicio")
-    return null
-  }
+  useEffect(() => {
+    if (usuarioAutenticado) {
+      router.push("/inicio");
+    }
+  }, [usuarioAutenticado, router]);
 
   return (
     <div className=" min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/background.jpg')" }}>

@@ -1,20 +1,23 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { LoginUsuario, RegistrarUsuario } from "core";
+import { LoginUsuario, ObterTodosFinanceiro, RegistrarUsuario } from "core";
 import app from "./externo/api/config";
 import LoginUsuarioController from "./adapters/usuario/LoginUsuarioController";
 import ProvedorBcrypt from "./externo/auth/ProvedorBcrypt";
 import ProvedorJWT from "./externo/auth/ProvedorJWT";
 import RegistrarUsuarioController from "./adapters/usuario/RegistrarUsuarioController";
 import RepositorioUsuarioPrismaPg from "./externo/db/RepositorioUsuarioPrismaPg";
+import RepositorioFinanceiroPrismaPg from "./externo/db/RepositorioFinanceiroPrismaPg";
 import UsuarioMiddleware from "./adapters/usuario/UsuarioMiddleware";
+import ObterTodosFinanceiroController from "./adapters/finance/ObterTodosFinanceiroController";
 
 // ------------------------------- Dependências
 
 const provedorToken = new ProvedorJWT(process.env.JWT_SECRET!);
 const provedorCriptografia = new ProvedorBcrypt();
 const repositorioUsuario = new RepositorioUsuarioPrismaPg();
+const repositorioFinanceiro = new RepositorioFinanceiroPrismaPg();
 
 // ------------------------------- Rotas abertas
 
@@ -33,3 +36,10 @@ const usuarioMiddleware = UsuarioMiddleware({
   repositorioUsuario,
   provedorToken,
 });
+
+const obterTodosFinanceiro = new ObterTodosFinanceiro(repositorioFinanceiro);
+new ObterTodosFinanceiroController(
+  app,
+  obterTodosFinanceiro,
+  usuarioMiddleware
+);

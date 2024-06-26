@@ -18,7 +18,7 @@ export default function Pagina(props: PaginaProps) {
 
     return (
         <ForcarUsuarioAutenticado>
-            <div className="flex flex-col md:flex-row overflow-hidden">
+            <div className="flex flex-col md:flex-row">
                 <MenuPrincipal toggleBarraLateral={toggleBarraLateral} isSidebarOpen={isSidebarOpen} />
                 <div className="flex flex-1">
                     <FinanceiroProvider>

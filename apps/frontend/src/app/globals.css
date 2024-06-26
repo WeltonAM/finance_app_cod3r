@@ -29,6 +29,30 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body::-webkit-scrollbar-track {
+  display: none;
+}
+
+body::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.registro-financeiro::-webkit-scrollbar {
+  display: none;
+}
+
+.registro-financeiro::-webkit-scrollbar-track {
+  display: none;
+}
+
+.registro-financeiro::-webkit-scrollbar-thumb {
+  display: none;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

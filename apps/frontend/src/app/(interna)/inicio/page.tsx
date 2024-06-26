@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react';
 import FinanceiroItem from "@/components/finance/FinanceiroItem";
 import Button from "@/components/shared/Button";
 import useFinanceiro from "@/data/hooks/useFinanceiro";
@@ -10,11 +11,14 @@ import Image from "next/image";
 export default function Inicio(props: any) {
     const isSmallScreen = useMediaQuery('(max-width: 500px)');
     const { financeiros, carregando } = useFinanceiro();
+    const [itensVisiveis, setItensVisiveis] = useState(5);
 
-    // financeiros = [];
+    const mostrarMaisItens = () => {
+        setItensVisiveis(prev => prev + 5);
+    };
 
     return (
-        <div className="flex flex-col flex-1 w-full p-10 md:px-14 md:py-16 lg:px-36 xl:px-48 min-h-screen items-center font-spartan">
+        <div className="flex flex-col flex-1 w-full p-10 md:px-14 md:pt-16 lg:px-36 xl:px-44 overflow-y-auto h-screen items-center font-spartan registro-financeiro">
             <div className={`flex flex-col w-full ${isSmallScreen ? "items-center gap-3" : "items-start"}`}>
                 <div className={`
                     flex 
@@ -31,10 +35,7 @@ export default function Inicio(props: any) {
                             <label htmlFor="filtro" className="">Filtrar por</label>
                             <select name="filtro" id="filtro" className="bg-transparent ml-1 select-none cursor-pointer select-purple-icon">
                                 <option className="bg-black text-white text-center border-0 focus:border-0" value="">Status</option>
-                                <option className="bg-black text-white text-center border-0 focus:border-0" value="">Status</option>
-                                <option className="bg-black text-white text-center border-0 focus:border-0" value="">Status</option>
                             </select>
-
                         </div>
 
                         <Button
@@ -63,7 +64,7 @@ export default function Inicio(props: any) {
                 !carregando && financeiros && financeiros.length > 0 ? (
                     <div className="flex flex-col pt-8 items-center justify-center w-full">
                         <div className="w-full">
-                            {financeiros!.map((financeiro: any) => (
+                            {financeiros!.slice(0, itensVisiveis).map((financeiro: any) => (
                                 <FinanceiroItem
                                     key={financeiro.id.valor}
                                     id={financeiro.id.valor.slice(0, 7)}
@@ -75,6 +76,12 @@ export default function Inicio(props: any) {
                                 />
                             ))}
                         </div>
+
+                        {itensVisiveis < financeiros!.length && (
+                            <div className="mt-4">
+                                <Button onClick={mostrarMaisItens} texto="Carregar Mais" />
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div className="flex flex-col pt-8 items-center justify-center">

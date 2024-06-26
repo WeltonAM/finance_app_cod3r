@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <MensagemProvider>
         <ProvedorAutenticacao>
-          <body>
+          <body className="md:overflow-hidden">
             {children}
           </body>
         </ProvedorAutenticacao>

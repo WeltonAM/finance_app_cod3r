@@ -1,5 +1,6 @@
 'use client'
 
+import FinanceiroItem from "@/components/finance/FinanceiroItem";
 import Button from "@/components/shared/Button";
 import useFinanceiro from "@/data/hooks/useFinanceiro";
 import useMediaQuery from "@/data/hooks/useMediaQueries";
@@ -13,7 +14,7 @@ export default function Inicio(props: any) {
     // financeiros = [];
 
     return (
-        <div className="flex flex-col flex-1 w-full p-10 md:px-14 md:py-20 lg:px-40 xl:px-60 min-h-screen items-center font-spartan">
+        <div className="flex flex-col flex-1 w-full p-10 md:px-14 md:py-16 lg:px-36 xl:px-48 min-h-screen items-center font-spartan">
             <div className={`flex flex-col w-full ${isSmallScreen ? "items-center gap-3" : "items-start"}`}>
                 <div className={`
                     flex 
@@ -61,29 +62,19 @@ export default function Inicio(props: any) {
             {
                 !carregando && financeiros && financeiros.length > 0 ? (
                     <div className="flex flex-col pt-8 items-center justify-center w-full">
-                        <ul className="w-full">
+                        <div className="w-full">
                             {financeiros!.map((financeiro: any) => (
-                                <li key={financeiro.id.valor} className="p-4 border-b border-zinc-200 w-full">
-                                    <div className="flex flex-col md:flex-row justify-between w-full">
-                                        <div>
-                                            <span className="font-semibold">Tipo:</span> {financeiro.tipo.valor}
-                                        </div>
-                                        <div>
-                                            <span className="font-semibold">Valor:</span> {financeiro.valor.valor}
-                                        </div>
-                                        <div>
-                                            <span className="font-semibold">Status:</span> {financeiro.status.valor}
-                                        </div>
-                                        <div>
-                                            <span className="font-semibold">Data:</span> {financeiro.data.valor}
-                                        </div>
-                                        <div>
-                                            <span className="font-semibold">Descrição:</span> {financeiro.descricao.valor}
-                                        </div>
-                                    </div>
-                                </li>
+                                <FinanceiroItem
+                                    key={financeiro.id.valor}
+                                    id={financeiro.id.valor.slice(0, 7)}
+                                    tipo={financeiro.tipo.valor}
+                                    valor={financeiro.valor.valor}
+                                    status={financeiro.status.valor}
+                                    data={financeiro.data.valor}
+                                    descricao={financeiro.descricao.valor}
+                                />
                             ))}
-                        </ul>
+                        </div>
                     </div>
                 ) : (
                     <div className="flex flex-col pt-8 items-center justify-center">

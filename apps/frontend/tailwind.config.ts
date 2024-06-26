@@ -15,6 +15,7 @@ const config: Config = {
       },
       fontFamily: {
         spartan: ["League Spartan", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
       },
     },
   },

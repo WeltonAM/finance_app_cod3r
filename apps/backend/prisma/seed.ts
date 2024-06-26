@@ -25,7 +25,7 @@ async function seed() {
       "cancelado",
     ]),
     data: faker.date.past().toISOString(),
-    descricao: faker.lorem.sentence(),
+    descricao: faker.lorem.sentence(30),
   }));
 
   await prisma.financeiro.createMany({ data: financeiros });

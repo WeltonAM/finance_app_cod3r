@@ -1,12 +1,12 @@
 'use client'
 
 import { FinanceiroDTO } from "adapters";
-import { StatusType } from "core";
 import { createContext, useCallback, useEffect, useState } from "react";
 import useApi from "../hooks/useApi";
 
 export interface FinanceiroContextProps {
     financeiros?: FinanceiroDTO[];
+    carregando: boolean;
     // salvarFinanceiro: (financeiro: FinanceiroDTO) => Promise<void>;
     // obterFinanceiroPorId: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
     // excluirFinanceiro: (financeiro: FinanceiroDTO) => Promise<void>;
@@ -17,21 +17,25 @@ const FinanceiroContext = createContext<FinanceiroContextProps>({} as any);
 
 export function FinanceiroProvider(props: any) {
     const [financeiros, setFinanceiros] = useState<FinanceiroDTO[]>([]);
+    const [carregando, setCarregando] = useState<boolean>(true)
     const { httpGet, httpPost, httpDelete } = useApi();
 
     const obterTodosFinanceiros = useCallback(async () => {
-        const resposta = await httpGet("/financeiros");
-        setFinanceiros(resposta.json);
-    }, [httpGet]);
+        setCarregando(true)
+        const resposta = await httpGet("/financeiros")
+        setFinanceiros(resposta.json)
+        setCarregando(false)
+    }, [httpGet])
 
     useEffect(() => {
-        obterTodosFinanceiros();
-    }, [obterTodosFinanceiros]);
+        obterTodosFinanceiros()
+    }, [obterTodosFinanceiros])
 
     return (
         <FinanceiroContext.Provider
             value={{
                 financeiros,
+                carregando,
                 // salvarFinanceiro,
                 // obterFinanceiroPorId,
                 // excluirFinanceiro,

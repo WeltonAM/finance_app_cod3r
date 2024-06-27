@@ -7,7 +7,7 @@ test("Deve salvar um financeiro", async () => {
   const tipo = "despesa" as TipoType;
   const valor = "10";
   const status = "pendente" as StatusType;
-  const data = new Date().toDateString();
+  const data = new Date().toISOString();
   const descricao = "Descrição padrão";
 
   const resultado = await casoDeUso.executar({
@@ -17,6 +17,8 @@ test("Deve salvar um financeiro", async () => {
     data,
     descricao,
   });
+
+  console.log(resultado);
 
   expect(resultado).toBeDefined();
 });

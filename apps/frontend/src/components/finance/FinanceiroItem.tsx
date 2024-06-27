@@ -27,8 +27,11 @@ export default function FinanceiroItem({ id, tipo, valor, status, data, descrica
 
     return (
         <div className="bg-zinc-900 p-4 rounded-md flex items-center justify-between mb-2">
-            <div className="flex items-center gap-5 font-inter">
-                <span className="text-2xl font-semibold">#{id.toUpperCase()}</span>
+            <div className="flex items-center justify-around gap-5 font-inter">
+                <span className="text-2xl font-semibold">
+                    <span className="text-zinc-400">#</span>
+                    {id.toUpperCase()}
+                </span>
                 <span className="text-zinc-500 font-spartan mt-1">{formatarData(data)}</span>
                 <span className="font-thin font-spartan mt-1">{descricao}</span>
             </div>

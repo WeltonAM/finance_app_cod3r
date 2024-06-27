@@ -54,7 +54,7 @@ export default function FinanceiroRegistros({ onNovoRegistroClick }: any) {
                         </div>
                     ) : (
                         <div className="text-zinc-400">
-                            Você possui {financeiros!.length} registro(s).
+                            Você possui {financeiros!.length} registro(s)
                         </div>
                     )
                 }

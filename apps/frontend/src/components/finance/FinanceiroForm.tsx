@@ -1,8 +1,7 @@
 'use client'
 
-import { IconChevronLeft } from "@tabler/icons-react";
+import { IconChevronLeft, IconEye } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
-import Button from "../shared/Button";
 
 export default function FinanceiroForm({ onVoltarClick }: any) {
     return (
@@ -18,7 +17,7 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
             <div className="bg-zinc-900 w-full p-4 rounded-md flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
                     <span className="mt-1 font-spartan" >Modo</span>
-                    <StatusBadge status="Visualização" />
+                    <StatusBadge icon={<IconEye size={15} />} status="Visualização" />
                 </div>
             </div>
 

@@ -26,7 +26,7 @@ export default function StatusBadge({ status, icon }: StatusBadgeProps) {
                     <IconCircleFilled size={7} className="mr-1" />
                 )
             }
-            <span className="font-semibold mt-1">{status}</span>
+            <span className="font-semibold mt-1">{status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}</span>
         </div>
     );
 }

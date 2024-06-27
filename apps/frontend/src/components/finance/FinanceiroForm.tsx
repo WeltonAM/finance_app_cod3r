@@ -68,6 +68,14 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
         setStatusMenuAberto(false);
     };
 
+    const handleSalvarClick = () => {
+        console.log("Dados dos registros:");
+        console.log("Descrição:", descricaoRegistro);
+        console.log("Tipo:", tipoRegistro);
+        console.log("Valor:", valorRegistro);
+        console.log("Data:", dataRegistro);
+        console.log("Status:", statusRegistro);
+    };
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -212,7 +220,7 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
             </div>
 
             <div className="bg-zinc-900 w-full p-4 rounded-md flex items-center gap-2 mb-2">
-                <button className="bg-purple-700 text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm">
+                <button onClick={handleSalvarClick} className="bg-purple-700 text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm">
                     Salvar
                 </button>
 

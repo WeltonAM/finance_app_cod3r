@@ -65,7 +65,7 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                     Salvar
                 </button>
 
-                <button className="bg-zinc-700 text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm">
+                <button onClick={onVoltarClick} className="bg-zinc-700 text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm">
                     Cancelar
                 </button>
             </div>

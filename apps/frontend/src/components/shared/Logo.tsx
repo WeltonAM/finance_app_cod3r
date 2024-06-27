@@ -6,7 +6,7 @@ interface LogoProps {
 
 export default function Logo(props: LogoProps) {
     return (
-        <Link href='/' className="w-[70px] md:w-[100px]">
+        <Link href='/inicio' className="w-[70px] md:w-[100px]">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 100 100"

@@ -63,19 +63,23 @@ export default function FinanceiroRegistros({ onNovoRegistroClick }: any) {
             {
                 !carregando && financeiros && financeiros.length > 0 ? (
                     <div className="flex flex-col pt-8 items-center justify-center w-full">
-                        <div className="w-full">
-                            {financeiros!.slice(0, itensVisiveis).map((financeiro: any) => (
-                                <FinanceiroItem
-                                    key={financeiro.id.valor}
-                                    id={financeiro.id.valor.slice(0, 7)}
-                                    tipo={financeiro.tipo.valor}
-                                    valor={financeiro.valor.valor}
-                                    status={financeiro.status.valor}
-                                    data={financeiro.data.valor}
-                                    descricao={financeiro.descricao.valor}
-                                />
-                            ))}
-                        </div>
+                        <table className="w-full border-separate border-spacing-y-2">
+                            <thead>
+                            </thead>
+                            <tbody className=''>
+                                {financeiros!.slice(0, itensVisiveis).map((financeiro: any) => (
+                                    <FinanceiroItem
+                                        key={financeiro.id.valor}
+                                        id={financeiro.id.valor.slice(0, 7)}
+                                        tipo={financeiro.tipo.valor}
+                                        valor={financeiro.valor.valor}
+                                        status={financeiro.status.valor}
+                                        data={financeiro.data.valor}
+                                        descricao={financeiro.descricao.valor}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
 
                         {itensVisiveis < financeiros!.length && (
                             <div className="mt-4">

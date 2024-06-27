@@ -2,9 +2,10 @@ import { IconCircleFilled } from "@tabler/icons-react";
 
 export type StatusBadgeProps = {
     status: string;
+    icon?: any;
 };
 
-export default function StatusBadge({ status }: StatusBadgeProps) {
+export default function StatusBadge({ status, icon }: StatusBadgeProps) {
     const getStatusStyles = (status: string) => {
         switch (status.toLowerCase()) {
             case 'consolidado':
@@ -19,8 +20,12 @@ export default function StatusBadge({ status }: StatusBadgeProps) {
     };
 
     return (
-        <div className={`flex items-center px-3 py-0 rounded-md bg-opacity-20 ${getStatusStyles(status)}`}>
-            <IconCircleFilled size={7} className="mr-1" />
+        <div className={`flex items-center justify-center px-3 py-0 rounded-md bg-opacity-20 ${getStatusStyles(status)}`}>
+            {
+                icon ?? (
+                    <IconCircleFilled size={7} className="mr-1" />
+                )
+            }
             <span className="font-semibold mt-1">{status}</span>
         </div>
     );

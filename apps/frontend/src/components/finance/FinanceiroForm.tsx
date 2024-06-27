@@ -1,6 +1,6 @@
 'use client'
 
-import { IconArrowLeft } from "@tabler/icons-react";
+import { IconChevronLeft } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
 import Button from "../shared/Button";
 
@@ -11,7 +11,7 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                 onClick={onVoltarClick}
                 className="text-zinc-400 flex flex-initial items-center font-inter"
             >
-                <IconArrowLeft size={20} className="mr-1" />
+                <IconChevronLeft size={25} className="mr-1 " />
                 Voltar
             </button>
 

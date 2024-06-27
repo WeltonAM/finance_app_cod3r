@@ -1,4 +1,4 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
+import { IconChevronRight, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
 
 export type FinanceiroItemProps = {
@@ -26,20 +26,24 @@ export default function FinanceiroItem({ id, tipo, valor, status, data, descrica
     };
 
     return (
-        <div className="bg-zinc-900 p-4 rounded-md flex items-center justify-between mb-2">
-            <div className="flex items-center justify-around gap-5 font-inter">
+        <tr className="bg-zinc-900 hover:bg-zinc-800 rounded-md cursor-pointer">
+            <td className="pl-4 py-4 rounded-l-md">
                 <span className="text-2xl font-semibold">
                     <span className="text-zinc-400">#</span>
                     {id.toUpperCase()}
                 </span>
-                <span className="text-zinc-500 font-spartan mt-1">{formatarData(data)}</span>
-                <span className="font-thin font-spartan mt-1">{descricao}</span>
-            </div>
+            </td>
+            <td className="p-2">
+                <span className="text-zinc-500 font-spartan">{formatarData(data)}</span>
+            </td>
+            <td className="p-2">
+                <span className="font-thin font-spartan">{descricao}</span>
+            </td>
 
-            <div className="flex flex-1"></div>
+            <td className="px-4 md:px-6 xl:px-8 "></td>
 
-            <div className="flex items-center gap-5">
-                <span className="flex font-semibold mt-1">
+            <td className="p-2">
+                <span className="flex font-semibold">
                     {tipo === "receita" ? (
                         <IconTrendingUp stroke={2.5} size={15} className="text-green-500 mb-2 mr-1" />
                     ) : (
@@ -47,9 +51,13 @@ export default function FinanceiroItem({ id, tipo, valor, status, data, descrica
                     )}
                     {(+valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </span>
-
+            </td>
+            <td className="p-2 ">
                 <StatusBadge status={status} />
-            </div>
-        </div>
+            </td>
+            <td className="pr-4 py-4 rounded-r-md">
+                <IconChevronRight stroke={2.5} size={15} className="text-zinc-400 mt-1 mr-1" />
+            </td>
+        </tr>
     );
 }

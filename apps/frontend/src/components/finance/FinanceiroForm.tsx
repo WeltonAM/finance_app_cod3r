@@ -6,16 +6,30 @@ import { useState } from 'react';
 
 export default function FinanceiroForm({ onVoltarClick }: any) {
     const [tipoRegistro, setTipoRegistro] = useState('receita');
+    const [valorRegistro, setValorRegistro] = useState('0,00');
+    const [descricaoRegistro, setDescricaoRegistro] = useState('');
+
+    const handleDescricaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDescricaoRegistro(e.target.value);
+    };
 
     const toggleTipoRegistro = () => {
         setTipoRegistro((prevTipo) => (prevTipo === 'receita' ? 'despesa' : 'receita'));
+    };
+
+    const handleValorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value.replace(/\D/g, '');
+        const valor = (parseInt(inputValue, 10) / 100).toFixed(2)
+            .replace('.', ',')
+            .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        setValorRegistro(valor);
     };
 
     return (
         <div className="flex flex-col gap-2 w-full">
             <button
                 onClick={onVoltarClick}
-                className="text-zinc-400 flex flex-initial items-center font-inter"
+                className="text-zinc-400 flex flex-initial items-center font-inter w-fit"
             >
                 <IconChevronLeft size={25} className="mr-1 " />
                 Voltar
@@ -35,8 +49,21 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                             type="text"
                             id="descricao_registro"
                             name="descricao_registro"
-                            className="w-full bg-transparent custom-placeholder focus:border-0 focus:outline-none text-zinc-200  placeholder:font-bold placeholder:text-xl placeholder:text-zinc-600"
+                            className="
+                                w-full bg-transparent custom-placeholder
+                                text-2xl
+                                font-spartan
+                                font-bold
+                                focus:border-0 focus:outline-none 
+                                text-zinc-200  
+                                placeholder:text-2xl placeholder:text-zinc-600
+                                placeholder:font-spartan
+                                placeholder:font-bold
+                            "
                             placeholder="Descrição do registro"
+                            value={descricaoRegistro}
+                            onChange={handleDescricaoChange}
+                            autoComplete="off"
                         />
                     </div>
 
@@ -76,7 +103,20 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
 
                     <div className="border-b border-zinc-700 flex flex-col mt-3">
                         <label htmlFor="valor_registro" className="text-left text-zinc-500">Valor Registro</label>
-                        <input type="text" id="valor_registro" name="valor_registro" className="font-spartan w-full bg-transparent focus:border-0 focus:outline-none text-zinc-200 text-xl placeholder:text-zinc-200 placeholder:font-bold" placeholder="R$ 0,00" />
+                        <input
+                            type="text"
+                            id="valor_registro"
+                            name="valor_registro"
+                            value={`R$ ${valorRegistro}`}
+                            onChange={handleValorChange}
+                            className="
+                                font-spartan w-full bg-transparent
+                                font-bold 
+                                focus:border-0 focus:outline-none 
+                                text-zinc-200 text-xl 
+                                placeholder:text-zinc-200 placeholder:font-bold
+                            "
+                        />
                     </div>
                 </div>
             </div>

@@ -1,13 +1,14 @@
-'use client'
-
 import { IconChevronLeft, IconEye, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function FinanceiroForm({ onVoltarClick }: any) {
     const [tipoRegistro, setTipoRegistro] = useState('receita');
     const [valorRegistro, setValorRegistro] = useState('0,00');
     const [descricaoRegistro, setDescricaoRegistro] = useState('');
+    const [dataRegistro, setDataRegistro] = useState('');
+
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleDescricaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setDescricaoRegistro(e.target.value);
@@ -25,6 +26,42 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
         setValorRegistro(valor);
     };
 
+    const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setDataRegistro(value);
+    };
+
+    const handleClickSpan = () => {
+        console.log(inputRef.current);
+        inputRef.current?.showPicker();
+    };
+
+    useEffect(() => {
+        const hoje = new Date();
+        const dia = hoje.getDate();
+        const mes = hoje.getMonth() + 1;
+        const ano = hoje.getFullYear();
+        setDataRegistro(`${ano}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`);
+    }, []);
+
+    const formatarDataExibicao = (data: string) => {
+        if (!data) return '';
+
+        const partes = data.split('-');
+        if (partes.length !== 3) return '';
+
+        const dia = parseInt(partes[2], 10);
+        const mes = parseInt(partes[1], 10) - 1;
+        const ano = parseInt(partes[0], 10);
+
+        const mesesAbreviados = [
+            'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+        ];
+
+        return `${dia} ${mesesAbreviados[mes]} ${ano}`;
+    };
+
     return (
         <div className="flex flex-col gap-2 w-full">
             <button
@@ -37,7 +74,7 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
 
             <div className="bg-zinc-900 w-full p-4 rounded-md flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
-                    <span className="mt-1 font-spartan" >Modo</span>
+                    <span className="mt-1 font-spartan">Modo</span>
                     <StatusBadge icon={<IconEye size={15} />} status="Visualização" />
                 </div>
             </div>
@@ -74,12 +111,27 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                 </div>
 
                 <div className="flex items-center justify-between w-full">
-                    <div className="border-b border-zinc-700 flex flex-col">
-                        <label htmlFor="data_registro" className="text-left text-zinc-500">Data Registro</label>
-                        <input type="date" id="data_registro" name="data_registro" className="bg-transparent focus:border-0 focus:outline-none text-zinc-200 text-xl" />
+                    <div className="border-b border-zinc-700 flex flex-col w-1/4" onClick={handleClickSpan}>
+                        <label htmlFor="data_registro" className="text-left text-zinc-500 cursor-pointer">Data Registro</label>
+                        <div className="relative">
+                            <input
+                                type="date"
+                                id="data_registro"
+                                name="data_registro"
+                                className="
+                                    cursor-pointer bg-transparent focus:border-0 
+                                    focus:outline-none text-zinc-800 text-xl 
+                                    absolute top-0 left-0 opacity-0 w-full h-full
+                                "
+                                ref={inputRef}
+                                value={dataRegistro}
+                                onChange={handleDataChange}
+                            />
+                            <span className="relative z-0 text-zinc-200 text-xl cursor-pointer">{formatarDataExibicao(dataRegistro)}</span>
+                        </div>
                     </div>
 
-                    <div className="border-b border-zinc-700 flex flex-col mt-3 w-1/4">
+                    <div className="border-b border-zinc-700 flex flex-col mt-1 w-1/4">
                         <label htmlFor="tipo_registro" className="text-left text-zinc-500 cursor-pointer">Tipo Registro</label>
                         <button
                             id="tipo_registro"
@@ -101,8 +153,8 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                         </button>
                     </div>
 
-                    <div className="border-b border-zinc-700 flex flex-col mt-3">
-                        <label htmlFor="valor_registro" className="text-left text-zinc-500">Valor Registro</label>
+                    <div className="border-b border-zinc-700 flex flex-col mt-1 w-1/4">
+                        <label htmlFor="valor_registro" className="text-left text-zinc-500 cursor-pointer">Valor Registro</label>
                         <input
                             type="text"
                             id="valor_registro"
@@ -111,7 +163,7 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                             onChange={handleValorChange}
                             className="
                                 font-spartan w-full bg-transparent
-                                font-bold 
+                                font-bold cursor-pointer
                                 focus:border-0 focus:outline-none 
                                 text-zinc-200 text-xl 
                                 placeholder:text-zinc-200 placeholder:font-bold

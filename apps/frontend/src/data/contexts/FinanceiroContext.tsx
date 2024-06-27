@@ -7,7 +7,7 @@ import useApi from "../hooks/useApi";
 export interface FinanceiroContextProps {
     financeiros?: FinanceiroDTO[];
     carregando: boolean;
-    // salvarFinanceiro: (financeiro: FinanceiroDTO) => Promise<void>;
+    // salvarFinanceiro: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
     // obterFinanceiroPorId: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
     // excluirFinanceiro: (financeiro: FinanceiroDTO) => Promise<void>;
     // filtrarFinanceirosPorStatus: (status: StatusType) => FinanceiroDTO[];
@@ -25,7 +25,24 @@ export function FinanceiroProvider(props: any) {
         const resposta = await httpGet("/financeiros")
         setFinanceiros(resposta.json)
         setCarregando(false)
-    }, [httpGet])
+    }, [httpGet]);
+
+    // const salvarFinanceiro(financeiro: FinanceiroDTO) {
+    //     try {
+    //         const response = await httpPost("/financeiros", {
+    //             tipo: tipoRegistro,
+    //             valor: valorRegistro,
+    //             descricao: descricaoRegistro,
+    //             data: dataRegistro,
+    //             status: statusRegistro,
+    //         });
+
+    //         console.log("Registro financeiro salvo:", response);
+    //         // Lógica adicional após salvar, como redirecionamento ou atualização do contexto
+    //     } catch (error) {
+    //         console.error("Erro ao salvar registro financeiro:", error);
+    //     }
+    // }
 
     useEffect(() => {
         obterTodosFinanceiros()

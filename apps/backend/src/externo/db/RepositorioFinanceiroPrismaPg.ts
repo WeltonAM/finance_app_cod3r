@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Financeiro as FinanceiroDB } from "@prisma/client";
 import { Financeiro, RepositorioFinanceiro } from "core";
 
 export default class RepositorioFinanceiroPrismaPg
@@ -10,11 +10,22 @@ export default class RepositorioFinanceiroPrismaPg
     this.prisma = new PrismaClient();
   }
 
-  salvar(financeiro: Financeiro): Promise<Financeiro> {
-    throw new Error("Method not implemented.");
+  async salvar(financeiro: Financeiro): Promise<Financeiro> {
+    const novoFinanceiro = await this.prisma.financeiro.upsert({
+      where: { id: financeiro.id.valor ?? -1 },
+      update: financeiro.props,
+      create: financeiro.props as any,
+    });
+
+    return new Financeiro(novoFinanceiro);
   }
-  obterPorId(id: string): Promise<Financeiro | null> {
-    throw new Error("Method not implemented.");
+
+  async obterPorId(id: string): Promise<Financeiro | null> {
+    const financeiro = await this.prisma.financeiro.findUnique({
+      where: { id },
+    });
+
+    return financeiro ? new Financeiro(financeiro) : null;
   }
 
   async obterPorTodos(): Promise<Financeiro[]> {
@@ -23,10 +34,19 @@ export default class RepositorioFinanceiroPrismaPg
     return financeiros.map((f: any) => new Financeiro(f));
   }
 
-  excluir(id: string): Promise<Financeiro | null> {
-    throw new Error("Method not implemented.");
+  async excluir(id: string): Promise<Financeiro | null> {
+    const financeiro = await this.prisma.financeiro.delete({
+      where: { id },
+    });
+
+    return financeiro ? new Financeiro(financeiro) : null;
   }
-  filtrarPorStatus(status: string): Promise<Financeiro[]> {
-    throw new Error("Method not implemented.");
+
+  async filtrarPorStatus(status: string): Promise<Financeiro[]> {
+    const financeiros = await this.prisma.financeiro.findMany({
+      where: { status },
+    });
+
+    return financeiros.map((f) => new Financeiro(f));
   }
 }

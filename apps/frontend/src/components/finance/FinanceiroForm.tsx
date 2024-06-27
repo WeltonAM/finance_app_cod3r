@@ -1,9 +1,16 @@
 'use client'
 
-import { IconChevronLeft, IconEye } from "@tabler/icons-react";
+import { IconChevronLeft, IconEye, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
+import { useState } from 'react';
 
 export default function FinanceiroForm({ onVoltarClick }: any) {
+    const [tipoRegistro, setTipoRegistro] = useState('receita');
+
+    const toggleTipoRegistro = () => {
+        setTipoRegistro((prevTipo) => (prevTipo === 'receita' ? 'despesa' : 'receita'));
+    };
+
     return (
         <div className="flex flex-col gap-2 w-full">
             <button
@@ -45,12 +52,26 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                         <input type="date" id="data_registro" name="data_registro" className="bg-transparent focus:border-0 focus:outline-none text-zinc-200 text-xl" />
                     </div>
 
-                    <div className="border-b border-zinc-700 flex flex-col mt-3">
-                        <label htmlFor="tipo_registro" className="text-left text-zinc-500">Tipo Registro</label>
-                        <select id="tipo_registro" name="tipo_registro" className="bg-transparent focus:border-0 focus:outline-none text-zinc-200 text-xl">
-                            <option value="receita">Receita</option>
-                            <option value="despesa">Despesa</option>
-                        </select>
+                    <div className="border-b border-zinc-700 flex flex-col mt-3 w-1/4">
+                        <label htmlFor="tipo_registro" className="text-left text-zinc-500 cursor-pointer">Tipo Registro</label>
+                        <button
+                            id="tipo_registro"
+                            name="tipo_registro"
+                            onClick={toggleTipoRegistro}
+                            className="bg-transparent focus:border-0 focus:outline-none text-zinc-200 text-xl cursor-pointer flex items-center"
+                        >
+                            {tipoRegistro === 'receita' ? (
+                                <span className="text-green-500 font-semibold font-spartan flex items-center">
+                                    <IconTrendingUp stroke={2.5} size={15} className="text-green-500 mb-2 mr-1" />
+                                    RECEITA
+                                </span>
+                            ) : (
+                                <span className="text-red-500 font-semibold font-spartan flex items-center">
+                                    <IconTrendingDown stroke={2.5} size={15} className="text-red-500 mt-1 mr-1" />
+                                    DESPESA
+                                </span>
+                            )}
+                        </button>
                     </div>
 
                     <div className="border-b border-zinc-700 flex flex-col mt-3">

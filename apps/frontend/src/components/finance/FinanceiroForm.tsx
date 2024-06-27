@@ -2,6 +2,8 @@ import { IconChevronLeft, IconNewSection, IconTrendingDown, IconTrendingUp } fro
 import StatusBadge from "../shared/StatusBadge";
 import { useEffect, useState, useRef } from 'react';
 import MenuStatus from "../shared/MenuStatus";
+import { FinanceiroDTO } from "adapters";
+import useFinanceiro from "@/data/hooks/useFinanceiro";
 
 export default function FinanceiroForm({ onVoltarClick }: any) {
     const [tipoRegistro, setTipoRegistro] = useState('receita');
@@ -10,6 +12,7 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
     const [dataRegistro, setDataRegistro] = useState('');
     const [statusRegistro, setStatusRegistro] = useState('pendente');
     const [statusMenuAberto, setStatusMenuAberto] = useState(false);
+    const { salvarFinanceiro, carregando } = useFinanceiro();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -68,13 +71,16 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
         setStatusMenuAberto(false);
     };
 
-    const handleSalvarClick = () => {
-        console.log("Dados dos registros:");
-        console.log("Descrição:", descricaoRegistro);
-        console.log("Tipo:", tipoRegistro);
-        console.log("Valor:", valorRegistro);
-        console.log("Data:", dataRegistro);
-        console.log("Status:", statusRegistro);
+    const handleSalvarClick = async () => {
+        const novoRegistro: FinanceiroDTO = {
+            tipo: tipoRegistro,
+            valor: parseFloat(valorRegistro.replace(',', '.')).toString(),
+            descricao: descricaoRegistro,
+            data: new Date(dataRegistro).toDateString(),
+            status: statusRegistro as any,
+        };
+
+        const novoFinanceiro = await salvarFinanceiro(novoRegistro);
     };
 
     useEffect(() => {

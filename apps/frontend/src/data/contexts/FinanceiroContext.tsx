@@ -7,7 +7,7 @@ import useApi from "../hooks/useApi";
 export interface FinanceiroContextProps {
     financeiros?: FinanceiroDTO[];
     carregando: boolean;
-    // salvarFinanceiro: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
+    salvarFinanceiro: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
     // obterFinanceiroPorId: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
     // excluirFinanceiro: (financeiro: FinanceiroDTO) => Promise<void>;
     // filtrarFinanceirosPorStatus: (status: StatusType) => FinanceiroDTO[];
@@ -27,22 +27,17 @@ export function FinanceiroProvider(props: any) {
         setCarregando(false)
     }, [httpGet]);
 
-    // const salvarFinanceiro(financeiro: FinanceiroDTO) {
-    //     try {
-    //         const response = await httpPost("/financeiros", {
-    //             tipo: tipoRegistro,
-    //             valor: valorRegistro,
-    //             descricao: descricaoRegistro,
-    //             data: dataRegistro,
-    //             status: statusRegistro,
-    //         });
+    const salvarFinanceiro = useCallback(async (financeiro: FinanceiroDTO) => {
+        setCarregando(true);
 
-    //         console.log("Registro financeiro salvo:", response);
-    //         // Lógica adicional após salvar, como redirecionamento ou atualização do contexto
-    //     } catch (error) {
-    //         console.error("Erro ao salvar registro financeiro:", error);
-    //     }
-    // }
+        const response = await httpPost("/financeiros", financeiro);
+        const novoFinanceiro = response.json;
+
+        setFinanceiros([...financeiros, novoFinanceiro]);
+
+        setCarregando(false);
+        return novoFinanceiro;
+    }, [httpPost, financeiros]);
 
     useEffect(() => {
         obterTodosFinanceiros()
@@ -53,7 +48,7 @@ export function FinanceiroProvider(props: any) {
             value={{
                 financeiros,
                 carregando,
-                // salvarFinanceiro,
+                salvarFinanceiro,
                 // obterFinanceiroPorId,
                 // excluirFinanceiro,
                 // filtrarFinanceirosPorStatus,

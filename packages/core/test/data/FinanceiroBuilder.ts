@@ -10,7 +10,7 @@ export default class FinanceiroBuilder {
       tipo: "despesa" as TipoType,
       valor: "10",
       status: "pendente" as StatusType,
-      data: new Date().toDateString(),
+      data: new Date().toISOString(),
       descricao: "Descrição padrão",
     });
   }

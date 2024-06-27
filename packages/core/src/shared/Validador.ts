@@ -148,7 +148,7 @@ export default class Validador {
   }
 
   dataValida(erro: string = "DATA_INVALIDA"): Validador {
-    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
     return regex.test(this.valor) ? this : this.adicionarErro(erro);
   }
 

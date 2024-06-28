@@ -2,21 +2,40 @@ import { IconX } from "@tabler/icons-react"
 import { Mensagem } from "@/data/contexts/MensagemContext"
 import useMensagens from "@/data/hooks/useMensagens"
 
+interface CodigoParaMensagem {
+    [key: string]: string;
+}
+
+const codigoParaMensagem: CodigoParaMensagem = {
+    VAZIO: "Os campos não podem ficar vazios",
+    SOBRENOME_INVALIDO: "Adicione um sobrenome válido",
+    SENHA_FRACA: "Senha inválida",
+    DESCRICAO_VAZIA: "Descrição não pode ser vazia",
+    EMAIL_INVALIDO: "Email inválido",
+    ERRO_DESCONHECIDO: "Atualize os dados e tente novamente",
+};
+
 export default function Mensagens() {
     const { mensagens, excluir } = useMensagens()
 
     function renderizarMensagem(msg: Mensagem) {
-        const textoString = JSON.stringify(msg.texto);
+        let texto = '';
+
+        if (codigoParaMensagem[msg.texto.codigo]) {
+            texto = codigoParaMensagem[msg.texto.codigo];
+        }
 
         return (
             <div key={msg.texto} className={`flex items-center gap-2 p-4 rounded-md shadow-md ${msg.tipo === "sucesso" ? "bg-green-400" : "bg-red-400"}`}>
-                <div>
+                <div className="mr-3">
                     <h1 className="text-lg font-semibold">{msg.tipo === "sucesso" ? "Efetuado com sucesso" : "Ocorreu um erro"}</h1>
-                    <p>{textoString}</p>
+                    <p>{texto}</p>
                 </div>
 
                 <button onClick={() => excluir(msg)} className="ml-auto">
-                    <IconX size={20} />
+                    <div className={`${msg.tipo === "sucesso" ? "bg-green-500" : "bg-red-500"} rounded-full p-2 flex items-center justify-center`}>
+                        <IconX size={20} />
+                    </div>
                 </button>
             </div>
         )

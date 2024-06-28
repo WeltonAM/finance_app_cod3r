@@ -4,6 +4,7 @@ import { useState } from 'react';
 import ForcarUsuarioAutenticado from "@/components/auth/ForcarUsuarioAutenticacao"
 import MenuPrincipal from "@/components/shared/MenuPrincipal"
 import { FinanceiroProvider } from '@/data/contexts/FinanceiroContext';
+import Mensagens from '@/components/shared/Mensagens';
 
 export interface PaginaProps {
     children: any
@@ -23,6 +24,9 @@ export default function Pagina(props: PaginaProps) {
                 <div className="flex flex-1">
                     <FinanceiroProvider>
                         {props.children}
+                        <div className="absolute top-4 right-4">
+                            <Mensagens />
+                        </div>
                     </FinanceiroProvider>
                 </div>
             </div>

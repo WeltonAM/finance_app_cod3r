@@ -80,11 +80,9 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
             status: statusRegistro as any,
         };
 
-        console.log(novoRegistro);
-
         const novoFinanceiro = await salvarFinanceiro(novoRegistro);
 
-        if (!carregando) {
+        if (!carregando && novoFinanceiro) {
             onVoltarClick()
         }
     };
@@ -115,14 +113,14 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                 onClick={onVoltarClick}
                 className="text-zinc-400 flex flex-initial items-center font-inter w-fit"
             >
-                <IconChevronLeft size={25} className="mr-1 " />
+                <IconChevronLeft size={25} className="mr-1" />
                 Voltar
             </button>
 
             <div className="bg-zinc-900 w-full p-4 rounded-md flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
                     <span className="select-none mt-1 font-spartan">Modo</span>
-                    <StatusBadge icon={<IconNewSection size={15} />} status="Inclusão" />
+                    <StatusBadge icon={<IconNewSection size={15} className="mr-1" />} status="Inclusão" />
                 </div>
             </div>
 
@@ -235,19 +233,19 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                 <button
                     onClick={handleSalvarClick}
                     className={`
-                        bg-purple-700 text-white 
+                        bg-purple-700 text-white w-[7rem] 
                         font-spartan pt-2 py-1 px-6 
-                        rounded-3xl text-sm
+                        rounded-3xl text-sm flex items-center justify-center
                         ${carregando ? 'cursor-not-allowed' : ''}
                     `}>
                     {
                         carregando ? (
-                            <IconLoader size={15} className="animate-spin" />
+                            <IconLoader size={20} className="animate-spin" />
                         ) : 'Salvar'
                     }
                 </button>
 
-                <button onClick={onVoltarClick} className="bg-zinc-700 text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm">
+                <button onClick={onVoltarClick} className="bg-zinc-700 w-[7rem] text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm">
                     Cancelar
                 </button>
             </div>

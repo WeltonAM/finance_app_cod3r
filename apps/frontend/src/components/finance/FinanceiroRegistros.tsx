@@ -52,9 +52,13 @@ export default function FinanceiroRegistros({ onNovoRegistroClick }: any) {
                         <div className="text-zinc-400">
                             Carregando...
                         </div>
+                    ) : financeiros && financeiros.length > 0 ? (
+                        <div className="text-zinc-400">
+                            Você possui {financeiros.length} registro(s)
+                        </div>
                     ) : (
                         <div className="text-zinc-400">
-                            Você possui {financeiros!.length} registro(s)
+                            Você não possui nenhuma registro
                         </div>
                     )
                 }

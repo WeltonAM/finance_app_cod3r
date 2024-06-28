@@ -3,6 +3,7 @@ dotenv.config();
 
 import {
   LoginUsuario,
+  ObterPorIdFinanceiro,
   ObterTodosFinanceiro,
   RegistrarUsuario,
   SalvarFinanceiro,
@@ -17,6 +18,7 @@ import RepositorioFinanceiroPrismaPg from "./externo/db/RepositorioFinanceiroPri
 import UsuarioMiddleware from "./adapters/usuario/UsuarioMiddleware";
 import ObterTodosFinanceiroController from "./adapters/finance/ObterTodosFinanceiroController";
 import SalvarFinanceiroController from "./adapters/finance/SalvarFinanceiroController";
+import ObterFinanceiroPorIdController from "./adapters/finance/ObterFinanceiroPorIdController";
 
 // ------------------------------- Dependências
 
@@ -52,3 +54,10 @@ new ObterTodosFinanceiroController(
 
 const salvarFinanceiro = new SalvarFinanceiro(repositorioFinanceiro);
 new SalvarFinanceiroController(app, salvarFinanceiro, usuarioMiddleware);
+
+const obterFinanceiroPorId = new ObterPorIdFinanceiro(repositorioFinanceiro);
+new ObterFinanceiroPorIdController(
+  app,
+  obterFinanceiroPorId,
+  usuarioMiddleware
+);

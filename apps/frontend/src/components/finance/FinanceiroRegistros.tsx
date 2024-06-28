@@ -7,8 +7,9 @@ import useFinanceiro from "@/data/hooks/useFinanceiro";
 import useMediaQuery from "@/data/hooks/useMediaQueries";
 import { IconPlus } from "@tabler/icons-react";
 import Image from "next/image";
+import Link from 'next/link';
 
-export default function FinanceiroRegistros({ onNovoRegistroClick }: any) {
+export default function FinanceiroRegistros() {
     const isSmallScreen = useMediaQuery('(max-width: 500px)');
     const { financeiros, carregando } = useFinanceiro();
     const [itensVisiveis, setItensVisiveis] = useState(5);
@@ -38,12 +39,25 @@ export default function FinanceiroRegistros({ onNovoRegistroClick }: any) {
                             </select>
                         </div>
 
-                        <Button
-                            onClick={onNovoRegistroClick}
-                            icone={<IconPlus width={15} height={15} />}
-                            texto="Novo Registro"
-                            defaultColor="default"
-                        />
+                        <Link
+                            href={'/registro'}
+                            className='
+                                flex justify-center items-center gap-1
+                                px-4 py-2 rounded-3xl
+                                text-white font-spartan
+                                bg-purple-700
+                            '
+                        >
+                            <div className="flex items-center justify-center gap-3">
+                                <div className="flex w-6 h-6 items-center justify-center bg-white rounded-full text-purple-700">
+                                    <IconPlus width={15} height={15} />
+                                </div>
+
+                                <p className="mt-1 font-extralight">
+                                    Novo Registro
+                                </p>
+                            </div>
+                        </Link>
                     </div>
                 </div>
 
@@ -74,7 +88,7 @@ export default function FinanceiroRegistros({ onNovoRegistroClick }: any) {
                                 {financeiros!.slice(0, itensVisiveis).map((financeiro: any) => (
                                     <FinanceiroItem
                                         key={financeiro.id.valor}
-                                        id={financeiro.id.valor.slice(0, 7)}
+                                        id={financeiro.id.valor}
                                         tipo={financeiro.tipo.valor}
                                         valor={financeiro.valor.valor}
                                         status={financeiro.status.valor}

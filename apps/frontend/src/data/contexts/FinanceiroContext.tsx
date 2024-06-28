@@ -8,7 +8,7 @@ export interface FinanceiroContextProps {
     financeiros?: FinanceiroDTO[];
     carregando: boolean;
     salvarFinanceiro: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
-    // obterFinanceiroPorId: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
+    obterFinanceiroPorId: (id: string) => Promise<FinanceiroDTO>;
     // excluirFinanceiro: (financeiro: FinanceiroDTO) => Promise<void>;
     // filtrarFinanceirosPorStatus: (status: StatusType) => FinanceiroDTO[];
 }
@@ -42,6 +42,15 @@ export function FinanceiroProvider(props: any) {
         }
     }, [httpPost, financeiros]);
 
+    const obterFinanceiroPorId = useCallback(async (id: string) => {
+        setCarregando(true);
+        const resposta = await httpGet(`/financeiros/${id}`);
+        const financeiro = resposta.json;
+        setCarregando(false);
+
+        return financeiro;
+    }, [httpGet,]);
+
     useEffect(() => {
         obterTodosFinanceiros()
     }, [obterTodosFinanceiros])
@@ -52,7 +61,7 @@ export function FinanceiroProvider(props: any) {
                 financeiros,
                 carregando,
                 salvarFinanceiro,
-                // obterFinanceiroPorId,
+                obterFinanceiroPorId,
                 // excluirFinanceiro,
                 // filtrarFinanceirosPorStatus,
             }}

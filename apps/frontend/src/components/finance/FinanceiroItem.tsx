@@ -1,5 +1,6 @@
 import { IconChevronRight, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
+import { useRouter } from "next/navigation";
 
 export type FinanceiroItemProps = {
     id: string;
@@ -11,6 +12,8 @@ export type FinanceiroItemProps = {
 };
 
 export default function FinanceiroItem({ id, tipo, valor, status, data, descricao }: FinanceiroItemProps) {
+    const router = useRouter();
+
     const formatarData = (data: string) => {
         const mesesAbreviados = [
             'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
@@ -25,12 +28,16 @@ export default function FinanceiroItem({ id, tipo, valor, status, data, descrica
         return `${dia} ${mes} ${ano}`;
     };
 
+    const handleAbrirRegistro = (id: string) => {
+        router.push(`/registro/${id}`);
+    };
+
     return (
-        <tr className="bg-zinc-900 hover:bg-zinc-800 rounded-md cursor-pointer">
+        <tr className="bg-zinc-900 hover:bg-zinc-800 rounded-md cursor-pointer" onClick={() => handleAbrirRegistro(id)}>
             <td className="pl-4 py-4 rounded-l-md">
                 <span className="text-2xl font-semibold">
                     <span className="text-zinc-400">#</span>
-                    {id.toUpperCase()}
+                    {id.slice(0, 7).toUpperCase()}
                 </span>
             </td>
             <td className="p-2">

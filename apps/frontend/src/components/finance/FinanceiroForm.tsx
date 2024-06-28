@@ -1,18 +1,25 @@
-import { IconChevronLeft, IconLoader, IconNewSection, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
+import { IconChevronLeft, IconEdit, IconLoader, IconNewSection, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
 import { useEffect, useState, useRef } from 'react';
 import MenuStatus from "../shared/MenuStatus";
 import { FinanceiroDTO } from "adapters";
 import useFinanceiro from "@/data/hooks/useFinanceiro";
+import Link from "next/link";
+import useMensagens from "@/data/hooks/useMensagens";
+import { useRouter, useParams } from "next/navigation";
 
-export default function FinanceiroForm({ onVoltarClick }: any) {
+export default function FinanceiroForm() {
     const [tipoRegistro, setTipoRegistro] = useState('receita');
     const [valorRegistro, setValorRegistro] = useState('0,00');
     const [descricaoRegistro, setDescricaoRegistro] = useState('');
     const [dataRegistro, setDataRegistro] = useState('');
     const [statusRegistro, setStatusRegistro] = useState('pendente');
     const [statusMenuAberto, setStatusMenuAberto] = useState(false);
-    const { salvarFinanceiro, carregando } = useFinanceiro();
+    const { salvarFinanceiro, carregando, obterFinanceiroPorId } = useFinanceiro();
+    const { adicionarSucesso } = useMensagens();
+    const router = useRouter();
+    const { id } = useParams();
+    const [financeiro, setFinanceiro] = useState<FinanceiroDTO | null>(null);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -83,11 +90,21 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
         const novoFinanceiro = await salvarFinanceiro(novoRegistro);
 
         if (!carregando && novoFinanceiro) {
-            onVoltarClick()
+            adicionarSucesso('Registro salvo com sucesso!');
+            router.push('/inicio');
         }
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            const response = await obterFinanceiroPorId(id as string);
+            setFinanceiro(response);
+        };
+
+        if (id) {
+            fetchData();
+        }
+
         const handleClickOutside = (event: MouseEvent) => {
             if (event.target instanceof HTMLElement && !event.target.closest("#user-info, #menu-status")) {
                 closeMenuStatus();
@@ -102,25 +119,28 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
         const ano = hoje.getFullYear();
         setDataRegistro(`${ano}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`);
 
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    }, [id]);
 
     return (
         <div className="flex flex-col gap-2 w-full">
-            <button
-                onClick={onVoltarClick}
+            <Link
+                href={'/inicio'}
                 className="text-zinc-400 flex flex-initial items-center font-inter w-fit"
             >
                 <IconChevronLeft size={25} className="mr-1" />
                 Voltar
-            </button>
+            </Link>
 
             <div className="bg-zinc-900 w-full p-4 rounded-md flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
                     <span className="select-none mt-1 font-spartan">Modo</span>
-                    <StatusBadge icon={<IconNewSection size={15} className="mr-1" />} status="Inclusão" />
+                    {
+                        id ? (
+                            <StatusBadge icon={<IconEdit size={15} className="mr-1" />} status="Edição" />
+                        ) : (
+                            <StatusBadge icon={<IconNewSection size={15} className="mr-1" />} status="Inclusão" />
+                        )
+                    }
                 </div>
             </div>
 
@@ -143,7 +163,9 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                                 placeholder:font-bold
                             "
                             placeholder="Descrição do registro"
-                            value={descricaoRegistro}
+                            value={
+                                descricaoRegistro
+                            }
                             onChange={handleDescricaoChange}
                             autoComplete="off"
                         />
@@ -245,9 +267,9 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
                     }
                 </button>
 
-                <button onClick={onVoltarClick} className="bg-zinc-700 w-[7rem] text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm">
+                <Link href={'/inicio'} className="bg-zinc-700 w-[7rem] text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm flex items-center justify-center">
                     Cancelar
-                </button>
+                </Link>
             </div>
         </div>
     );

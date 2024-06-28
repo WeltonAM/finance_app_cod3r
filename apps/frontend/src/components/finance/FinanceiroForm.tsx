@@ -12,7 +12,7 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
     const [dataRegistro, setDataRegistro] = useState('');
     const [statusRegistro, setStatusRegistro] = useState('pendente');
     const [statusMenuAberto, setStatusMenuAberto] = useState(false);
-    let { salvarFinanceiro, carregando } = useFinanceiro();
+    const { salvarFinanceiro, carregando } = useFinanceiro();
 
     const inputRef = useRef<HTMLInputElement>(null);
 

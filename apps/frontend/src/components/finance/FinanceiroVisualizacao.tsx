@@ -1,54 +1,23 @@
-import { IconChevronLeft, IconEdit, IconLoader, IconNewSection, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
+import { IconChevronLeft, IconEye, IconLoader, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
 import { useEffect, useState, useRef } from 'react';
-import MenuStatus from "../shared/MenuStatus";
 import { FinanceiroDTO } from "adapters";
 import useFinanceiro from "@/data/hooks/useFinanceiro";
 import Link from "next/link";
-import useMensagens from "@/data/hooks/useMensagens";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
-export default function FinanceiroForm() {
+export default function FinanceiroVisualizacao() {
     const [tipoRegistro, setTipoRegistro] = useState('receita');
     const [valorRegistro, setValorRegistro] = useState('0,00');
     const [descricaoRegistro, setDescricaoRegistro] = useState('');
     const [dataRegistro, setDataRegistro] = useState('');
     const [statusRegistro, setStatusRegistro] = useState('pendente');
-    const [statusMenuAberto, setStatusMenuAberto] = useState(false);
-    const { salvarFinanceiro, carregando, obterFinanceiroPorId } = useFinanceiro();
-    const { adicionarSucesso } = useMensagens();
+    const { obterFinanceiroPorId } = useFinanceiro();
     const router = useRouter();
+    const { id } = useParams();
+    const [financeiro, setFinanceiro] = useState<FinanceiroDTO | null>(null);
 
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const handleDescricaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDescricaoRegistro(e.target.value);
-    };
-
-    const toggleTipoRegistro = () => {
-        setTipoRegistro((prevTipo) => (prevTipo === 'receita' ? 'despesa' : 'receita'));
-    };
-
-    const handleValorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value.replace(/\D/g, '');
-        const valor = (parseInt(inputValue, 10) / 100).toFixed(2)
-            .replace('.', ',')
-            .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        setValorRegistro(valor);
-    };
-
-    const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setDataRegistro(value);
-    };
-
-    const handleClickSpan = () => {
-        inputRef.current?.showPicker();
-    };
-
-    const handleSelectStatus = (status: string) => {
-        setStatusRegistro(status);
-    };
 
     const formatarDataExibicao = (data: string) => {
         if (!data) return '';
@@ -68,47 +37,25 @@ export default function FinanceiroForm() {
         return `${dia} ${mesesAbreviados[mes]} ${ano}`;
     };
 
-    const toggleMenu = () => {
-        setStatusMenuAberto(!statusMenuAberto);
-    };
-
-    const closeMenuStatus = () => {
-        setStatusMenuAberto(false);
-    };
-
-    const handleSalvarClick = async () => {
-        const novoRegistro: FinanceiroDTO = {
-            tipo: tipoRegistro,
-            valor: parseFloat(valorRegistro.replace(',', '.')).toString(),
-            descricao: descricaoRegistro,
-            data: new Date(dataRegistro).toISOString(),
-            status: statusRegistro as any,
-        };
-
-        const novoFinanceiro = await salvarFinanceiro(novoRegistro);
-
-        if (!carregando && novoFinanceiro) {
-            adicionarSucesso('Registro salvo com sucesso!');
-            router.push('/inicio');
-        }
-    };
-
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (event.target instanceof HTMLElement && !event.target.closest("#user-info, #menu-status")) {
-                closeMenuStatus();
-            }
+        const fetchData = async () => {
+            // const response = await obterFinanceiroPorId(id as string);
+            // setFinanceiro(response);
         };
 
-        document.addEventListener("mousedown", handleClickOutside);
+        console.log(financeiro);
 
-        const hoje = new Date();
-        const dia = hoje.getDate();
-        const mes = hoje.getMonth() + 1;
-        const ano = hoje.getFullYear();
-        setDataRegistro(`${ano}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`);
+        if (id) {
+            fetchData();
+        }
 
-    }, []);
+        // const hoje = new Date();
+        // const dia = hoje.getDate();
+        // const mes = hoje.getMonth() + 1;
+        // const ano = hoje.getFullYear();
+        // setDataRegistro(`${ano}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`);
+
+    }, [id]);
 
     return (
         <div className="flex flex-col gap-2 w-full">
@@ -124,7 +71,7 @@ export default function FinanceiroForm() {
                 <div className="flex items-center gap-3">
                     <span className="select-none mt-1 font-spartan">Modo</span>
                     {
-                        <StatusBadge icon={<IconNewSection size={15} className="mr-1" />} status="Inclusão" />
+                        <StatusBadge icon={<IconEye size={15} className="mr-1" />} status="Visualização" />
                     }
                 </div>
             </div>
@@ -151,30 +98,19 @@ export default function FinanceiroForm() {
                             value={
                                 descricaoRegistro
                             }
-                            onChange={handleDescricaoChange}
+                            readOnly
                             autoComplete="off"
                         />
                     </div>
 
-                    <div className="flex flex-col flex-end cursor-pointer" onClick={toggleMenu}>
+                    <div className="flex flex-col flex-end cursor-pointer" >
                         <span className="select-none text-right mr-1 text-zinc-500 cursor-pointer">Status Registro</span>
                         <StatusBadge status={statusRegistro} />
-
-                        {statusMenuAberto && (
-                            <div
-                                className="
-                                absolute top-[calc(100% + 5px)] left-3/4 mt-6
-                            "
-                                id="menu-status"
-                            >
-                                <MenuStatus onSelectStatus={handleSelectStatus} isMenuStatusAberto={statusMenuAberto} />
-                            </div>
-                        )}
                     </div>
                 </div>
 
                 <div className="flex items-baseline justify-between w-full">
-                    <div className="border-b border-zinc-700 flex flex-col w-1/4 cursor-pointer" onClick={handleClickSpan}>
+                    <div className="border-b border-zinc-700 flex flex-col w-1/4 cursor-pointer" >
                         <label htmlFor="data_registro" className="select-none text-left text-zinc-500 cursor-pointer">Data Registro</label>
                         <div className="relative">
                             <input
@@ -188,7 +124,7 @@ export default function FinanceiroForm() {
                                 "
                                 ref={inputRef}
                                 value={dataRegistro}
-                                onChange={handleDataChange}
+                                readOnly
                             />
                             <span className="select-none relative z-0 text-zinc-200 text-xl cursor-pointer z-99">{formatarDataExibicao(dataRegistro)}</span>
                         </div>
@@ -199,7 +135,6 @@ export default function FinanceiroForm() {
                         <button
                             id="tipo_registro"
                             name="tipo_registro"
-                            onClick={toggleTipoRegistro}
                             className="bg-transparent focus:border-0 focus:outline-none text-zinc-200 text-xl cursor-pointer flex items-center"
                         >
                             {tipoRegistro === 'receita' ? (
@@ -223,7 +158,7 @@ export default function FinanceiroForm() {
                             id="valor_registro"
                             name="valor_registro"
                             value={`R$ ${valorRegistro}`}
-                            onChange={handleValorChange}
+                            readOnly
                             className="
                                 font-spartan w-full bg-transparent
                                 font-bold cursor-pointer
@@ -238,18 +173,12 @@ export default function FinanceiroForm() {
 
             <div className="bg-zinc-900 w-full p-4 rounded-md flex items-center gap-2 mb-2">
                 <button
-                    onClick={handleSalvarClick}
                     className={`
                         bg-purple-700 text-white w-[7rem] 
                         font-spartan pt-2 py-1 px-6 
                         rounded-3xl text-sm flex items-center justify-center
-                        ${carregando ? 'cursor-not-allowed' : ''}
                     `}>
-                    {
-                        carregando ? (
-                            <IconLoader size={20} className="animate-spin" />
-                        ) : 'Salvar'
-                    }
+                    Editar
                 </button>
 
                 <Link href={'/inicio'} className="bg-zinc-700 w-[7rem] text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm flex items-center justify-center">

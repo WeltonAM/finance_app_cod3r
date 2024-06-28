@@ -1,4 +1,4 @@
-import { IconChevronLeft, IconNewSection, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
+import { IconChevronLeft, IconLoader, IconNewSection, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
 import { useEffect, useState, useRef } from 'react';
 import MenuStatus from "../shared/MenuStatus";
@@ -12,7 +12,7 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
     const [dataRegistro, setDataRegistro] = useState('');
     const [statusRegistro, setStatusRegistro] = useState('pendente');
     const [statusMenuAberto, setStatusMenuAberto] = useState(false);
-    const { salvarFinanceiro, carregando } = useFinanceiro();
+    let { salvarFinanceiro, carregando } = useFinanceiro();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -76,11 +76,17 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
             tipo: tipoRegistro,
             valor: parseFloat(valorRegistro.replace(',', '.')).toString(),
             descricao: descricaoRegistro,
-            data: new Date(dataRegistro).toDateString(),
+            data: new Date(dataRegistro).toISOString(),
             status: statusRegistro as any,
         };
 
+        console.log(novoRegistro);
+
         const novoFinanceiro = await salvarFinanceiro(novoRegistro);
+
+        if (!carregando) {
+            onVoltarClick()
+        }
     };
 
     useEffect(() => {
@@ -226,8 +232,19 @@ export default function FinanceiroForm({ onVoltarClick }: any) {
             </div>
 
             <div className="bg-zinc-900 w-full p-4 rounded-md flex items-center gap-2 mb-2">
-                <button onClick={handleSalvarClick} className="bg-purple-700 text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm">
-                    Salvar
+                <button
+                    onClick={handleSalvarClick}
+                    className={`
+                        bg-purple-700 text-white 
+                        font-spartan pt-2 py-1 px-6 
+                        rounded-3xl text-sm
+                        ${carregando ? 'cursor-not-allowed' : ''}
+                    `}>
+                    {
+                        carregando ? (
+                            <IconLoader size={15} className="animate-spin" />
+                        ) : 'Salvar'
+                    }
                 </button>
 
                 <button onClick={onVoltarClick} className="bg-zinc-700 text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm">

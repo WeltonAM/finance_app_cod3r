@@ -31,12 +31,15 @@ export function FinanceiroProvider(props: any) {
         setCarregando(true);
 
         const response = await httpPost("/financeiros", financeiro);
-        const novoFinanceiro = response.json;
 
-        setFinanceiros([...financeiros, novoFinanceiro]);
+        if (response.sucesso) {
+            const novoFinanceiro = response.json;
+            setFinanceiros([...financeiros, novoFinanceiro]);
 
-        setCarregando(false);
-        return novoFinanceiro;
+            setCarregando(false);
+
+            return novoFinanceiro;
+        }
     }, [httpPost, financeiros]);
 
     useEffect(() => {

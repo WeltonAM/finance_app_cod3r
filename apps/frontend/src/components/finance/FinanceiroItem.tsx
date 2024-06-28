@@ -18,9 +18,9 @@ export default function FinanceiroItem({ id, tipo, valor, status, data, descrica
         ];
 
         const dataObj = new Date(data);
-        const dia = dataObj.getDate();
-        const mes = mesesAbreviados[dataObj.getMonth()];
-        const ano = dataObj.getFullYear();
+        const dia = dataObj.getUTCDate();
+        const mes = mesesAbreviados[dataObj.getUTCMonth()];
+        const ano = dataObj.getUTCFullYear();
 
         return `${dia} ${mes} ${ano}`;
     };

@@ -29,7 +29,9 @@ export default class RepositorioFinanceiroPrismaPg
   }
 
   async obterPorTodos(): Promise<Financeiro[]> {
-    const financeiros = await this.prisma.financeiro.findMany({});
+    const financeiros = await this.prisma.financeiro.findMany({
+      orderBy: { data: "desc" },
+    });
 
     return financeiros.map((f: any) => new Financeiro(f));
   }

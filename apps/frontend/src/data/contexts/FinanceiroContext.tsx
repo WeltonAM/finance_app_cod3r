@@ -8,7 +8,7 @@ export interface FinanceiroContextProps {
     carregando: boolean;
     salvarFinanceiro: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
     obterFinanceiroPorId: (id: string) => Promise<FinanceiroDTO | null>;
-    // excluirFinanceiro: (financeiro: FinanceiroDTO) => Promise<void>;
+    excluirFinanceiro: (id: string) => Promise<void>;
     // filtrarFinanceirosPorStatus: (status: StatusType) => FinanceiroDTO[];
 }
 
@@ -32,7 +32,7 @@ export function FinanceiroProvider({ children }: { children: ReactNode }) {
         const response = await httpPost("/financeiros", financeiro);
         if (response.sucesso) {
             const novoFinanceiro = response.json;
-            setFinanceiros([...financeiros, novoFinanceiro]);
+            obterTodosFinanceiros();
             setCarregando(false);
             return novoFinanceiro;
         }
@@ -47,6 +47,16 @@ export function FinanceiroProvider({ children }: { children: ReactNode }) {
         return financeiro;
     }, [httpGet]);
 
+    const excluirFinanceiro = useCallback(async (id: string) => {
+        setCarregando(true);
+        const resposta = await httpDelete(`/financeiro/${id}`);
+        if (resposta.sucesso) {
+            obterTodosFinanceiros();
+            setCarregando(false);
+            return resposta.json;
+        }
+    }, [httpDelete, financeiros]);
+
     useEffect(() => {
         obterTodosFinanceiros();
     }, [obterTodosFinanceiros]);
@@ -59,7 +69,7 @@ export function FinanceiroProvider({ children }: { children: ReactNode }) {
                 carregando,
                 salvarFinanceiro,
                 obterFinanceiroPorId,
-                // excluirFinanceiro,
+                excluirFinanceiro,
                 // filtrarFinanceirosPorStatus,
             }}
         >

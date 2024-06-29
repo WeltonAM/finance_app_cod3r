@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import {
+  ExcluirFinanceiro,
   LoginUsuario,
   ObterPorIdFinanceiro,
   ObterTodosFinanceiro,
@@ -19,6 +20,7 @@ import UsuarioMiddleware from "./adapters/usuario/UsuarioMiddleware";
 import ObterTodosFinanceiroController from "./adapters/finance/ObterTodosFinanceiroController";
 import SalvarFinanceiroController from "./adapters/finance/SalvarFinanceiroController";
 import ObterFinanceiroPorIdController from "./adapters/finance/ObterFinanceiroPorIdController";
+import ExcluirFinanceiroController from "./adapters/finance/ExcluirFinanceiroController";
 
 // ------------------------------- Dependências
 
@@ -57,3 +59,6 @@ new SalvarFinanceiroController(app, salvarFinanceiro, usuarioMiddleware);
 
 const obterFinanceiroPorId = new ObterPorIdFinanceiro(repositorioFinanceiro);
 new ObterFinanceiroPorIdController(app, obterFinanceiroPorId);
+
+const excluirFinanceiro = new ExcluirFinanceiro(repositorioFinanceiro);
+new ExcluirFinanceiroController(app, excluirFinanceiro, usuarioMiddleware);

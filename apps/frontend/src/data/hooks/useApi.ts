@@ -1,98 +1,99 @@
-import { useCallback } from "react"
-import RespostaApi from "../model/RespostaApi"
-import useMensagens from "./useMensagens"
-import useSessao from "./useSessao"
+import { useCallback } from "react";
+import RespostaApi from "../model/RespostaApi";
+import useMensagens from "./useMensagens";
+import useSessao from "./useSessao";
 
 export default function useApi() {
-    const { token } = useSessao()
-    const { adicionarErro } = useMensagens()
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL!
+  const { token } = useSessao();
+  const { adicionarErro } = useMensagens();
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL!;
 
-    const renderizarErrosSeExistir = useCallback(
-        function (err: any) {
-            if (!err) return
-            if (Array.isArray(err)) {
-                return err.map(adicionarErro)
-            } else if (typeof err === "string") {
-                adicionarErro(err)
-            } else {
-                adicionarErro("Erro desconhecido")
-            }
+  const renderizarErrosSeExistir = useCallback(
+    function (err: any) {
+      if (!err) return;
+      if (Array.isArray(err)) {
+        return err.map(adicionarErro);
+      } else if (typeof err === "string") {
+        adicionarErro(err);
+      } else {
+        adicionarErro("Erro desconhecido");
+      }
+    },
+    [adicionarErro]
+  );
+
+  const httpGet = useCallback(
+    async function (path: string): Promise<RespostaApi> {
+      const url = `${baseUrl}${path}`;
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        [adicionarErro],
-    )
+      });
+      console.log(res);
+      const json = await res.json();
+      renderizarErrosSeExistir(json.erros);
 
-    const httpGet = useCallback(
-        async function (path: string): Promise<RespostaApi> {
-            const url = `${baseUrl}${path}`
-            const res = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            const json = await res.json()
-            renderizarErrosSeExistir(json.erros)
+      return {
+        json,
+        status: res.status,
+        sucesso: sucesso(res.status),
+        erros: json.erros,
+      };
+    },
+    [baseUrl, token, renderizarErrosSeExistir]
+  );
 
-            return {
-                json,
-                status: res.status,
-                sucesso: sucesso(res.status),
-                erros: json.erros,
-            }
+  const httpPost = useCallback(
+    async function (path: string, body: any): Promise<RespostaApi> {
+      const url = `${baseUrl}${path}`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        [baseUrl, token, renderizarErrosSeExistir],
-    )
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      renderizarErrosSeExistir(json.erros);
 
-    const httpPost = useCallback(
-        async function (path: string, body: any): Promise<RespostaApi> {
-            const url = `${baseUrl}${path}`
-            const res = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(body),
-            })
-            const json = await res.json()
-            renderizarErrosSeExistir(json.erros)
+      return {
+        json,
+        status: res.status,
+        sucesso: sucesso(res.status),
+        erros: json.erros,
+      };
+    },
+    [baseUrl, token, renderizarErrosSeExistir]
+  );
 
-            return {
-                json,
-                status: res.status,
-                sucesso: sucesso(res.status),
-                erros: json.erros,
-            }
+  const httpDelete = useCallback(
+    async function (path: string): Promise<RespostaApi> {
+      const url = `${baseUrl}${path}`;
+      const resp = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        [baseUrl, token, renderizarErrosSeExistir],
-    )
+      });
+      const json = await resp.json();
+      renderizarErrosSeExistir(json.erros);
 
-    const httpDelete = useCallback(
-        async function (path: string): Promise<RespostaApi> {
-            const url = `${baseUrl}${path}`
-            const resp = await fetch(url, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            const json = await resp.json()
-            renderizarErrosSeExistir(json.erros)
+      return {
+        json,
+        status: resp.status,
+        sucesso: sucesso(resp.status),
+        erros: json.erros,
+      };
+    },
+    [baseUrl, token, renderizarErrosSeExistir]
+  );
 
-            return {
-                json,
-                status: resp.status,
-                sucesso: sucesso(resp.status),
-                erros: json.erros,
-            }
-        },
-        [baseUrl, token, renderizarErrosSeExistir],
-    )
+  function sucesso(status: number): boolean {
+    return status >= 200 && status < 300;
+  }
 
-    function sucesso(status: number): boolean {
-        return status >= 200 && status < 300
-    }
-
-    return { httpGet, httpPost, httpDelete }
+  return { httpGet, httpPost, httpDelete };
 }

@@ -1,4 +1,4 @@
-import { IconChevronLeft, IconEdit, IconLoader, IconNewSection, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
+import { IconChevronLeft, IconEdit, IconNewSection, IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 import StatusBadge from "../shared/StatusBadge";
 import { useEffect, useState, useRef } from 'react';
 import MenuStatus from "../shared/MenuStatus";
@@ -9,6 +9,7 @@ import useMensagens from "@/data/hooks/useMensagens";
 import { useParams, useRouter } from "next/navigation";
 import { formatarData } from "@/utils/formatarData";
 import { StatusType } from "core";
+import ModalConfirmacao from "../shared/ModalConfirmacao";
 
 export default function FinanceiroForm() {
     const [tipoRegistro, setTipoRegistro] = useState('receita');
@@ -18,7 +19,8 @@ export default function FinanceiroForm() {
     const [statusRegistro, setStatusRegistro] = useState('pendente');
     const [statusMenuAberto, setStatusMenuAberto] = useState(false);
     const [financeiroId, setFinanceiroId] = useState('');
-    const { salvarFinanceiro, obterFinanceiroPorId } = useFinanceiro();
+    const [modalAberto, setModalAberto] = useState(false);
+    const { salvarFinanceiro, obterFinanceiroPorId, excluirFinanceiro } = useFinanceiro();
     const { adicionarSucesso } = useMensagens();
     const router = useRouter();
     const { id } = useParams();
@@ -47,7 +49,7 @@ export default function FinanceiroForm() {
     };
 
     const handleClickSpan = () => {
-        inputRef.current?.showPicker();
+        inputRef.current?.click();
     };
 
     const handleSelectStatus = (status: string) => {
@@ -72,14 +74,23 @@ export default function FinanceiroForm() {
             status: statusRegistro.toLowerCase() as StatusType,
         };
 
-        console.log(novoRegistro, id);
-
-        const novoFinanceiro = await salvarFinanceiro(novoRegistro);
+        const novoFinanceiro: FinanceiroDTO = await salvarFinanceiro(novoRegistro);
 
         if (novoFinanceiro) {
             adicionarSucesso('Registro salvo com sucesso!', 5000);
             router.push('/inicio');
         }
+    };
+
+    const handleExcluirClick = async () => {
+        setModalAberto(true);
+    };
+
+    const handleConfirmarExclusao = async () => {
+        await excluirFinanceiro(id as string);
+
+        adicionarSucesso('Registro excluído com sucesso!', 5000);
+        router.push('/inicio');
     };
 
     useEffect(() => {
@@ -102,7 +113,7 @@ export default function FinanceiroForm() {
                 const financeiro = await obterFinanceiroPorId(id as string);
                 if (financeiro) {
                     setTipoRegistro(financeiro.tipo!);
-                    setValorRegistro(financeiro?.valor!.replace('.', ','));
+                    setValorRegistro(parseFloat(financeiro?.valor!).toFixed(2).replace('.', ','));
                     setDescricaoRegistro(financeiro.descricao!);
                     setDataRegistro(financeiro.data!);
                     setStatusRegistro(financeiro.status!);
@@ -268,7 +279,7 @@ export default function FinanceiroForm() {
                 {
                     id ? (
                         <button
-                            onClick={handleSalvarClick}
+                            onClick={handleExcluirClick}
                             className={`
                                 bg-red-700 text-white w-[7rem] 
                                 font-spartan pt-2 py-1 px-6 
@@ -279,6 +290,12 @@ export default function FinanceiroForm() {
                     ) : null
                 }
             </div>
+
+            <ModalConfirmacao
+                isOpen={modalAberto}
+                onCancel={() => setModalAberto(false)}
+                onConfirm={handleConfirmarExclusao}
+            />
         </div>
     );
 }

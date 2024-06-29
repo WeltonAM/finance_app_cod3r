@@ -100,7 +100,7 @@ export default function FinanceiroVisualizacao() {
                                 font-bold
                                 text-zinc-200 text-xl 
                             "
-                        >{`R$ ${financeiro?.valor!.replace('.', ',')}`}</span>
+                        >{`R$ ${parseFloat(financeiro?.valor!).toFixed(2).replace('.', ',')}`}</span>
                     </div>
                 </div>
             </div>

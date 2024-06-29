@@ -96,7 +96,7 @@ export default function FinanceiroVisualizacao() {
                                 font-bold
                                 text-zinc-200 text-xl 
                             "
-                        >{`R$ ${financeiro?.valor as string}`}</span>
+                        >{`R$ ${parseInt(financeiro?.valor!).toFixed(2).replace('.', ',')}`}</span>
                     </div>
                 </div>
             </div>

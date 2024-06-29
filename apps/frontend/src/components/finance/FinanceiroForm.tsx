@@ -71,7 +71,7 @@ export default function FinanceiroForm() {
         const novoFinanceiro = await salvarFinanceiro(novoRegistro);
 
         if (!carregando && novoFinanceiro) {
-            adicionarSucesso('Registro salvo com sucesso!');
+            adicionarSucesso('Registro salvo com sucesso!', 5000);
             router.push('/inicio');
         }
     };
@@ -86,10 +86,7 @@ export default function FinanceiroForm() {
         document.addEventListener("mousedown", handleClickOutside);
 
         const hoje = new Date();
-        const dia = hoje.getDate();
-        const mes = hoje.getMonth() + 1;
-        const ano = hoje.getFullYear();
-        setDataRegistro(`${ano}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`);
+        setDataRegistro(formatarData(hoje.toDateString()));
 
     }, []);
 

@@ -7,6 +7,7 @@ import useFinanceiro from "@/data/hooks/useFinanceiro";
 import Link from "next/link";
 import useMensagens from "@/data/hooks/useMensagens";
 import { useRouter } from "next/navigation";
+import { formatarData } from "@/utils/formatarData";
 
 export default function FinanceiroForm() {
     const [tipoRegistro, setTipoRegistro] = useState('receita');
@@ -48,24 +49,6 @@ export default function FinanceiroForm() {
 
     const handleSelectStatus = (status: string) => {
         setStatusRegistro(status);
-    };
-
-    const formatarDataExibicao = (data: string) => {
-        if (!data) return '';
-
-        const partes = data.split('-');
-        if (partes.length !== 3) return '';
-
-        const dia = parseInt(partes[2], 10);
-        const mes = parseInt(partes[1], 10) - 1;
-        const ano = parseInt(partes[0], 10);
-
-        const mesesAbreviados = [
-            'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-        ];
-
-        return `${dia} ${mesesAbreviados[mes]} ${ano}`;
     };
 
     const toggleMenu = () => {
@@ -190,7 +173,7 @@ export default function FinanceiroForm() {
                                 value={dataRegistro}
                                 onChange={handleDataChange}
                             />
-                            <span className="select-none relative z-0 text-zinc-200 text-xl cursor-pointer z-99">{formatarDataExibicao(dataRegistro)}</span>
+                            <span className="select-none relative z-0 text-zinc-200 text-xl cursor-pointer z-99">{formatarData(dataRegistro)}</span>
                         </div>
                     </div>
 

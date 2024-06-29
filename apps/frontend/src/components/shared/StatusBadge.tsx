@@ -6,6 +6,7 @@ export type StatusBadgeProps = {
 };
 
 export default function StatusBadge({ status, icon }: StatusBadgeProps) {
+    console.log(status);
     const getStatusStyles = (status: string) => {
         switch (status.toLowerCase()) {
             case 'consolidado':

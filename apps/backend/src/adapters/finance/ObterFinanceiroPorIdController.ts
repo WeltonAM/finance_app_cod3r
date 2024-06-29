@@ -10,8 +10,8 @@ export default class ObterFinanceiroPorIdController {
   ) {
     servidor.get("/financeiro/:id", ...middleware, async (req, res) => {
       try {
-        const financeiro = await casoDeUso.executar(req.query.id as string);
-        res.status(200).json(financeiro);
+        const financeiro = await casoDeUso.executar(req.params.id as string);
+        res.status(200).json(financeiro?.props);
       } catch (e: any) {
         res.status(400).json({ erros: Erros.tratar(e) });
       }

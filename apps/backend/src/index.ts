@@ -56,8 +56,4 @@ const salvarFinanceiro = new SalvarFinanceiro(repositorioFinanceiro);
 new SalvarFinanceiroController(app, salvarFinanceiro, usuarioMiddleware);
 
 const obterFinanceiroPorId = new ObterPorIdFinanceiro(repositorioFinanceiro);
-new ObterFinanceiroPorIdController(
-  app,
-  obterFinanceiroPorId,
-  usuarioMiddleware
-);
+new ObterFinanceiroPorIdController(app, obterFinanceiroPorId);

@@ -5,13 +5,9 @@ import { FinanceiroDTO } from "adapters";
 import useFinanceiro from "@/data/hooks/useFinanceiro";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
+import { formatarData } from "@/utils/formatarData";
 
 export default function FinanceiroVisualizacao() {
-    const [tipoRegistro, setTipoRegistro] = useState('receita');
-    const [valorRegistro, setValorRegistro] = useState('0,00');
-    const [descricaoRegistro, setDescricaoRegistro] = useState('');
-    const [dataRegistro, setDataRegistro] = useState('');
-    const [statusRegistro, setStatusRegistro] = useState('pendente');
     const { obterFinanceiroPorId } = useFinanceiro();
     const router = useRouter();
     const { id } = useParams();
@@ -19,43 +15,18 @@ export default function FinanceiroVisualizacao() {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const formatarDataExibicao = (data: string) => {
-        if (!data) return '';
-
-        const partes = data.split('-');
-        if (partes.length !== 3) return '';
-
-        const dia = parseInt(partes[2], 10);
-        const mes = parseInt(partes[1], 10) - 1;
-        const ano = parseInt(partes[0], 10);
-
-        const mesesAbreviados = [
-            'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-        ];
-
-        return `${dia} ${mesesAbreviados[mes]} ${ano}`;
-    };
-
     useEffect(() => {
         const fetchData = async () => {
-            // const response = await obterFinanceiroPorId(id as string);
-            // setFinanceiro(response);
+            const response = await obterFinanceiroPorId(id as string);
+            setFinanceiro(response);
         };
-
-        console.log(financeiro);
 
         if (id) {
             fetchData();
         }
+    }, [id, obterFinanceiroPorId]);
 
-        // const hoje = new Date();
-        // const dia = hoje.getDate();
-        // const mes = hoje.getMonth() + 1;
-        // const ano = hoje.getFullYear();
-        // setDataRegistro(`${ano}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`);
-
-    }, [id]);
+    console.log(financeiro?.status);
 
     return (
         <div className="flex flex-col gap-2 w-full">
@@ -95,9 +66,7 @@ export default function FinanceiroVisualizacao() {
                                 placeholder:font-bold
                             "
                             placeholder="Descrição do registro"
-                            value={
-                                descricaoRegistro
-                            }
+                            value={financeiro?.descricao || ''}
                             readOnly
                             autoComplete="off"
                         />
@@ -105,7 +74,7 @@ export default function FinanceiroVisualizacao() {
 
                     <div className="flex flex-col flex-end cursor-pointer" >
                         <span className="select-none text-right mr-1 text-zinc-500 cursor-pointer">Status Registro</span>
-                        <StatusBadge status={statusRegistro} />
+                        {/* <StatusBadge status={ } /> */}
                     </div>
                 </div>
 
@@ -123,10 +92,10 @@ export default function FinanceiroVisualizacao() {
                                     absolute top-0 left-0 opacity-0 w-full h-full
                                 "
                                 ref={inputRef}
-                                value={dataRegistro}
+                                value={financeiro?.data || ''}
                                 readOnly
                             />
-                            <span className="select-none relative z-0 text-zinc-200 text-xl cursor-pointer z-99">{formatarDataExibicao(dataRegistro)}</span>
+                            <span className="select-none relative z-0 text-zinc-200 text-xl cursor-pointer z-99">{formatarData(financeiro?.data as string)}</span>
                         </div>
                     </div>
 
@@ -137,7 +106,7 @@ export default function FinanceiroVisualizacao() {
                             name="tipo_registro"
                             className="bg-transparent focus:border-0 focus:outline-none text-zinc-200 text-xl cursor-pointer flex items-center"
                         >
-                            {tipoRegistro === 'receita' ? (
+                            {financeiro?.tipo === 'receita' ? (
                                 <span className="select-none text-green-500 font-semibold font-spartan flex items-center">
                                     <IconTrendingUp stroke={2.5} size={15} className="text-green-500 mb-2 mr-1" />
                                     RECEITA
@@ -157,7 +126,7 @@ export default function FinanceiroVisualizacao() {
                             type="text"
                             id="valor_registro"
                             name="valor_registro"
-                            value={`R$ ${valorRegistro}`}
+                            value={`R$ ${financeiro?.valor || ''}`}
                             readOnly
                             className="
                                 font-spartan w-full bg-transparent

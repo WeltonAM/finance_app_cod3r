@@ -1,11 +1,12 @@
 'use client'
 
-import FinanceiroVisualizacao from '@/components/finance/FinanceiroVisualizacao';
+import FinanceiroForm from "@/components/finance/FinanceiroForm";
 
-export default function VisualizarFinanceiro() {
+
+export default function EditarFinanceiro() {
     return (
         <div className="flex flex-col flex-1 w-full p-10 md:px-14 md:pt-16 lg:px-36 xl:px-44 overflow-y-auto h-screen items-center font-spartan registro-financeiro">
-            <FinanceiroVisualizacao />
+            <FinanceiroForm />
         </div>
     );
 }

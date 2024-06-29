@@ -40,9 +40,10 @@ export default function FinanceiroVisualizacao() {
                     <StatusBadge icon={<IconEye size={15} className="mr-1" />} status="Visualização" />
                 </div>
 
-                <Link href={'/inicio'} className="bg-zinc-700 w-[7rem] text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm flex items-center justify-center">
+                <Link href={`/editar/${id}`} className="bg-zinc-700 w-[7rem] text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm flex items-center justify-center">
                     Editar
                 </Link>
+
             </div>
 
             <div className="bg-zinc-900 w-full p-6 rounded-md flex flex-col items-center mb-2 gap-11">

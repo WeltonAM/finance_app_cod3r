@@ -6,7 +6,7 @@ import { FinanceiroDTO } from "adapters";
 import useFinanceiro from "@/data/hooks/useFinanceiro";
 import Link from "next/link";
 import useMensagens from "@/data/hooks/useMensagens";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { formatarData } from "@/utils/formatarData";
 
 export default function FinanceiroForm() {
@@ -16,9 +16,11 @@ export default function FinanceiroForm() {
     const [dataRegistro, setDataRegistro] = useState('');
     const [statusRegistro, setStatusRegistro] = useState('pendente');
     const [statusMenuAberto, setStatusMenuAberto] = useState(false);
-    const { salvarFinanceiro, carregando, obterFinanceiroPorId } = useFinanceiro();
+    const [financeiroId, setFinanceiroId] = useState('');
+    const { salvarFinanceiro, obterFinanceiroPorId } = useFinanceiro();
     const { adicionarSucesso } = useMensagens();
     const router = useRouter();
+    const { id } = useParams();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -70,7 +72,7 @@ export default function FinanceiroForm() {
 
         const novoFinanceiro = await salvarFinanceiro(novoRegistro);
 
-        if (!carregando && novoFinanceiro) {
+        if (novoFinanceiro) {
             adicionarSucesso('Registro salvo com sucesso!', 5000);
             router.push('/inicio');
         }
@@ -90,6 +92,26 @@ export default function FinanceiroForm() {
 
     }, []);
 
+    useEffect(() => {
+        const fetchFinanceiro = async () => {
+            if (id) {
+                const financeiro = await obterFinanceiroPorId(id as string);
+                if (financeiro) {
+                    setTipoRegistro(financeiro.tipo!);
+                    setValorRegistro(parseInt(financeiro?.valor!).toFixed(2).replace('.', ','));
+                    setDescricaoRegistro(financeiro.descricao!);
+                    setDataRegistro(financeiro.data!);
+                    setStatusRegistro(financeiro.status!);
+                    setFinanceiroId(financeiro.id!);
+                }
+            }
+        };
+
+        if (id) {
+            fetchFinanceiro();
+        }
+    }, [id, obterFinanceiroPorId]);
+
     return (
         <div className="flex flex-col gap-2 w-full">
             <Link
@@ -104,7 +126,7 @@ export default function FinanceiroForm() {
                 <div className="flex items-center gap-3">
                     <span className="select-none mt-1 font-spartan">Modo</span>
                     {
-                        <StatusBadge icon={<IconNewSection size={15} className="mr-1" />} status="Inclusão" />
+                        id ? <StatusBadge icon={<IconEdit size={15} className="mr-1" />} status="Edição" /> : <StatusBadge icon={<IconNewSection size={15} className="mr-1" />} status="Inclusão" />
                     }
                 </div>
             </div>
@@ -112,6 +134,11 @@ export default function FinanceiroForm() {
             <div className="bg-zinc-900 w-full p-4 rounded-md flex flex-col items-center mb-2 gap-16">
                 <div className="flex items-center justify-between gap-3 w-full">
                     <div className="border-b border-zinc-700 w-1/3">
+                        {
+                            id && (
+                                <span className="font-inter">#{financeiroId.slice(0, 6).toUpperCase()}</span>
+                            )
+                        }
                         <input
                             type="text"
                             id="descricao_registro"
@@ -128,9 +155,7 @@ export default function FinanceiroForm() {
                                 placeholder:font-bold
                             "
                             placeholder="Descrição do registro"
-                            value={
-                                descricaoRegistro
-                            }
+                            value={descricaoRegistro}
                             onChange={handleDescricaoChange}
                             autoComplete="off"
                         />
@@ -216,25 +241,36 @@ export default function FinanceiroForm() {
                 </div>
             </div>
 
-            <div className="bg-zinc-900 w-full p-4 rounded-md flex items-center gap-2 mb-2">
-                <button
-                    onClick={handleSalvarClick}
-                    className={`
-                        bg-purple-700 text-white w-[7rem] 
-                        font-spartan pt-2 py-1 px-6 
-                        rounded-3xl text-sm flex items-center justify-center
-                        ${carregando ? 'cursor-not-allowed' : ''}
-                    `}>
-                    {
-                        carregando ? (
-                            <IconLoader size={20} className="animate-spin" />
-                        ) : 'Salvar'
-                    }
-                </button>
+            <div className="bg-zinc-900 w-full p-4 rounded-md flex items-center justify-between gap-2 mb-2">
+                <div className="flex gap-2">
+                    <button
+                        onClick={handleSalvarClick}
+                        className={`
+                            bg-purple-700 text-white w-[7rem] 
+                            font-spartan pt-2 py-1 px-6 
+                            rounded-3xl text-sm flex items-center justify-center
+                        `}>
+                        Salvar
+                    </button>
 
-                <Link href={'/inicio'} className="bg-zinc-700 w-[7rem] text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm flex items-center justify-center">
-                    Cancelar
-                </Link>
+                    <Link href={'/inicio'} className="bg-zinc-700 w-[7rem] text-white font-spartan pt-2 py-1 px-6 rounded-3xl text-sm flex items-center justify-center">
+                        Cancelar
+                    </Link>
+                </div>
+
+                {
+                    id ? (
+                        <button
+                            onClick={handleSalvarClick}
+                            className={`
+                                bg-red-700 text-white w-[7rem] 
+                                font-spartan pt-2 py-1 px-6 
+                                rounded-3xl text-sm flex items-center justify-center
+                            `}>
+                            Excluir
+                        </button>
+                    ) : null
+                }
             </div>
         </div>
     );

@@ -14,6 +14,7 @@ export default class SalvarFinanceiroController {
   private handleSalvarFinanceiro = async (req: Request, res: Response) => {
     try {
       const financeiroProps = {
+        id: req.body.id,
         tipo: req.body.tipo,
         valor: req.body.valor,
         status: req.body.status,

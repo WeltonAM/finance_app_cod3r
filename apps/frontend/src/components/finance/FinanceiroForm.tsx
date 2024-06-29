@@ -8,6 +8,7 @@ import Link from "next/link";
 import useMensagens from "@/data/hooks/useMensagens";
 import { useParams, useRouter } from "next/navigation";
 import { formatarData } from "@/utils/formatarData";
+import { StatusType } from "core";
 
 export default function FinanceiroForm() {
     const [tipoRegistro, setTipoRegistro] = useState('receita');
@@ -63,12 +64,15 @@ export default function FinanceiroForm() {
 
     const handleSalvarClick = async () => {
         const novoRegistro: FinanceiroDTO = {
-            tipo: tipoRegistro,
+            id: id ? id as string : undefined,
+            tipo: tipoRegistro.toLowerCase(),
             valor: parseFloat(valorRegistro.replace(',', '.')).toString(),
             descricao: descricaoRegistro,
             data: new Date(dataRegistro).toISOString(),
-            status: statusRegistro as any,
+            status: statusRegistro.toLowerCase() as StatusType,
         };
+
+        console.log(novoRegistro, id);
 
         const novoFinanceiro = await salvarFinanceiro(novoRegistro);
 
@@ -98,7 +102,7 @@ export default function FinanceiroForm() {
                 const financeiro = await obterFinanceiroPorId(id as string);
                 if (financeiro) {
                     setTipoRegistro(financeiro.tipo!);
-                    setValorRegistro(parseInt(financeiro?.valor!).toFixed(2).replace('.', ','));
+                    setValorRegistro(financeiro?.valor!.replace('.', ','));
                     setDescricaoRegistro(financeiro.descricao!);
                     setDataRegistro(financeiro.data!);
                     setStatusRegistro(financeiro.status!);
@@ -136,7 +140,10 @@ export default function FinanceiroForm() {
                     <div className="border-b border-zinc-700 w-1/3">
                         {
                             id && (
-                                <span className="font-inter">#{financeiroId.slice(0, 6).toUpperCase()}</span>
+                                <span className="font-inter">
+                                    <span className="text-zinc-400">#</span>
+                                    {financeiroId.slice(0, 6).toUpperCase()}
+                                </span>
                             )
                         }
                         <input

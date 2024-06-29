@@ -13,6 +13,7 @@ const codigoParaMensagem: CodigoParaMensagem = {
     DESCRICAO_VAZIA: "Descrição não pode ser vazia",
     EMAIL_INVALIDO: "Email inválido",
     ERRO_DESCONHECIDO: "Atualize os dados e tente novamente",
+    STATUS_INVALIDO: "Status inválido",
 };
 
 export default function Mensagens() {

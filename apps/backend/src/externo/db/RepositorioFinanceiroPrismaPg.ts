@@ -11,6 +11,9 @@ export default class RepositorioFinanceiroPrismaPg
   }
 
   async salvar(financeiro: Financeiro): Promise<Financeiro> {
+    console.log(financeiro, "prisma");
+    console.log(financeiro.id.valor, "ID PRISMA");
+
     const novoFinanceiro = await this.prisma.financeiro.upsert({
       where: { id: financeiro.id.valor ?? -1 },
       update: financeiro.props,

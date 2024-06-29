@@ -49,7 +49,10 @@ export default function FinanceiroVisualizacao() {
             <div className="bg-zinc-900 w-full p-6 rounded-md flex flex-col items-center mb-2 gap-11">
                 <div className="flex items-center justify-between gap-3 w-full">
                     <div className="flex flex-col">
-                        <span className="font-inter">#{financeiro?.id?.slice(0, 6).toUpperCase()}</span>
+                        <span className="font-inter">
+                            <span className="text-zinc-400">#</span>
+                            {financeiro?.id?.slice(0, 6).toUpperCase()}
+                        </span>
                         <span className="font-spartan text-2xl py-2 px-1 text-zinc-400 font-extrabold">{financeiro?.descricao}</span>
                     </div>
 
@@ -97,7 +100,7 @@ export default function FinanceiroVisualizacao() {
                                 font-bold
                                 text-zinc-200 text-xl 
                             "
-                        >{`R$ ${parseInt(financeiro?.valor!).toFixed(2).replace('.', ',')}`}</span>
+                        >{`R$ ${financeiro?.valor!.replace('.', ',')}`}</span>
                     </div>
                 </div>
             </div>

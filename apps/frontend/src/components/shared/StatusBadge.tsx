@@ -6,7 +6,6 @@ export type StatusBadgeProps = {
 };
 
 export default function StatusBadge({ status, icon }: StatusBadgeProps) {
-    console.log(status);
     const getStatusStyles = (status: string) => {
         switch (status.toLowerCase()) {
             case 'consolidado':
@@ -21,7 +20,7 @@ export default function StatusBadge({ status, icon }: StatusBadgeProps) {
     };
 
     return (
-        <div className={`flex items-center justify-center px-3 py-0 rounded-md bg-opacity-20 ${getStatusStyles(status)}`}>
+        <div className={`flex items-center justify-center px-3 py-0 rounded-md bg-opacity-20 select-none ${getStatusStyles(status)}`}>
             {
                 icon ?? (
                     <IconCircleFilled size={7} className="mr-1" />

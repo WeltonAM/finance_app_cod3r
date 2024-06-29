@@ -1,10 +1,10 @@
 "use client"
+import { useContext, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import useAutenticacao from "@/data/hooks/useAutenticacao"
+import ContextoAutenticacao from "@/data/contexts/ContextoAutenticacao"
 import useFormAutenticacao from "@/data/hooks/useFormAutenticacao"
 import Mensagens from "@/components/shared/Mensagens"
 import Image from "next/image"
-import { useEffect } from "react"
 
 interface TextInputProps {
   placeholder: string;
@@ -23,7 +23,7 @@ interface ButtonProps {
 export default function Autenticacao() {
   const router = useRouter()
   const { usuario, modo, alterarUsuario, alternarModo } = useFormAutenticacao()
-  const { usuarioAutenticado, registrar, login } = useAutenticacao()
+  const { usuarioAutenticado, carregando, registrar, login } = useContext(ContextoAutenticacao)
 
   function alterarAtributo(atributo: string) {
     return (e: any) => {
@@ -35,62 +35,77 @@ export default function Autenticacao() {
   }
 
   useEffect(() => {
-    if (usuarioAutenticado) {
-      router.push("/inicio");
+    if (!carregando && usuarioAutenticado) {
+      router.push("/inicio")
     }
-  }, [usuarioAutenticado, router]);
+  }, [carregando, usuarioAutenticado, router])
+
+  if (carregando) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="w-16 h-16 border-4 border-cyan-900 border-t-orange-500 rounded-full animate-spin"></div>
+      </div>
+    )
+  }
 
   return (
-    <div className=" min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/background.jpg')" }}>
-      <div className="flex flex-col justify-center items-center gap-5 h-screen ">
-        <div className="flex flex-col gap-1 w-[24rem] bg-neutral-900/80 p-9 rounded-md border border-zinc-700">
-          <div className="flex justify-center items-center">
-            <Image width={250} height={250} src="/logo.svg" priority={true} alt="logo" />
-          </div>
+    <>
+      {
+        !carregando && (
+          <div className="min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/background.jpg')" }}>
+            <div className="flex flex-col justify-center items-center gap-5 h-screen ">
+              <div className="flex flex-col gap-1 w-[24rem] bg-neutral-900/80 p-9 rounded-md border border-zinc-700">
+                <div className="flex justify-center items-center">
+                  <Image width={250} height={250} src="/logo.svg" priority={true} alt="logo" />
+                </div>
 
-          <h1 className="text-xl text-center p-4 self-center text-white">
-            {modo === "login" ? "Entre com a sua conta" : "Cadastre-se na plataforma"}
-          </h1>
+                <h1 className="text-xl text-center p-4 self-center text-white">
+                  {modo === "login" ? "Entre com a sua conta" : "Cadastre-se na plataforma"}
+                </h1>
 
-          <div className="flex flex-col gap-4">
-            {modo === "registro" && (
-              <TextInput
-                placeholder="Nome"
-                value={usuario.nome ?? ""}
-                onChange={alterarAtributo("nome")}
-              />
-            )}
-            <TextInput
-              placeholder="Email"
-              value={usuario.email ?? ""}
-              onChange={alterarAtributo("email")}
-            />
-            <TextInput
-              placeholder="Senha"
-              type="password"
-              value={usuario.senha ?? ""}
-              onChange={alterarAtributo("senha")}
-            />
-          </div>
+                <div className="flex flex-col gap-4">
+                  {modo === "registro" && (
+                    <TextInput
+                      placeholder="Nome"
+                      value={usuario.nome ?? ""}
+                      onChange={alterarAtributo("nome")}
+                    />
+                  )}
+                  <TextInput
+                    placeholder="Email"
+                    value={usuario.email ?? ""}
+                    onChange={alterarAtributo("email")}
+                  />
+                  <TextInput
+                    placeholder="Senha"
+                    type="password"
+                    value={usuario.senha ?? ""}
+                    onChange={alterarAtributo("senha")}
+                  />
+                </div>
 
-          <div className="flex-1 flex flex-col gap-3 mt-5">
-            <Button
-              onClick={() =>
-                modo === "registro" ? registrar(usuario) : login(usuario)
-              }
-            >
-              {modo === "registro" ? "Registrar" : "Login"}
-            </Button>
-            <Button onClick={alternarModo} variant="subtle" className="text-white">
-              {modo === "registro" ? "Já possui conta?" : "Deseja se registrar?"}
-            </Button>
+                <div className="flex-1 flex flex-col gap-3 mt-5">
+                  <Button
+                    onClick={() =>
+                      modo === "registro" ? registrar(usuario) : login(usuario)
+                    }
+                  >
+                    {modo === "registro" ? "Registrar" : "Login"}
+                  </Button>
+                  <Button onClick={alternarModo} variant="subtle" className="text-white">
+                    {modo === "registro" ? "Já possui conta?" : "Deseja se registrar?"}
+                  </Button>
+                </div>
+              </div>
+              <div className="absolute top-4 right-4">
+                <Mensagens />
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="absolute top-4 right-4">
-          <Mensagens />
-        </div>
-      </div>
-    </div >
+        )
+      }
+    </>
+
   )
 }
 

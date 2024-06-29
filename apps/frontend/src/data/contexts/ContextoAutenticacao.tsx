@@ -16,12 +16,7 @@ const ContextoAutenticacao = createContext<ContextoAutenticacaoProps>({} as any)
 
 export function ProvedorAutenticacao(props: any) {
     const { httpPost } = useApi()
-    const {
-        token,
-        usuarioAutenticado,
-        criar: criarSessao,
-        limpar: limparSessao,
-    } = useSessao()
+    const { token, usuarioAutenticado, criar: criarSessao, limpar: limparSessao } = useSessao()
 
     const [carregando, setCarregando] = useState<boolean>(true)
 

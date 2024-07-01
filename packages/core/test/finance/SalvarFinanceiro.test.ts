@@ -18,7 +18,5 @@ test("Deve salvar um financeiro", async () => {
     descricao,
   });
 
-  console.log(resultado);
-
   expect(resultado).toBeDefined();
 });

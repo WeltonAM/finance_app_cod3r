@@ -1,22 +1,60 @@
 'use client'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FinanceiroItem from "@/components/finance/FinanceiroItem";
 import Button from "@/components/shared/Button";
 import useFinanceiro from "@/data/hooks/useFinanceiro";
 import useMediaQuery from "@/data/hooks/useMediaQueries";
-import { IconPlus } from "@tabler/icons-react";
+import { IconChevronDown, IconPlus, IconCheck } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from 'next/link';
+import { StatusType } from 'core';
 
 export default function FinanceiroRegistros() {
     const isSmallScreen = useMediaQuery('(max-width: 500px)');
-    const { financeiros, carregando } = useFinanceiro();
+    const { financeiros, carregando, filtrarFinanceirosPorStatus, obterTodosFinanceiros } = useFinanceiro();
     const [itensVisiveis, setItensVisiveis] = useState(5);
+    const [statusRegistro, setStatusRegistro] = useState<StatusType | 'todos'>('todos');
+    const [listaVisivel, setListaVisivel] = useState(false);
+
+    const handleSelectStatus = (status: StatusType | 'todos') => {
+        setStatusRegistro(status);
+        setListaVisivel(false); // Fechar a lista após a seleção
+    };
+
+    const toggleListaVisivel = () => {
+        setListaVisivel(!listaVisivel);
+    };
 
     const mostrarMaisItens = () => {
         setItensVisiveis(prev => prev + 5);
     };
+
+    useEffect(() => {
+        const handleFiltragem = async () => {
+            if (statusRegistro === 'todos') {
+                await obterTodosFinanceiros();
+            } else {
+                await filtrarFinanceirosPorStatus(statusRegistro);
+            }
+        };
+
+        handleFiltragem();
+    }, [statusRegistro, filtrarFinanceirosPorStatus, obterTodosFinanceiros]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (event.target instanceof HTMLElement && !event.target.closest("#status-selector")) {
+                setListaVisivel(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <>
@@ -32,11 +70,46 @@ export default function FinanceiroRegistros() {
                     <h3 className="text-3xl font-bold">Minhas Finanças</h3>
 
                     <div className="flex flex-col-reverse md:flex-row items-center justify-center gap-4">
-                        <div className="flex items-center font-semibold">
-                            <label htmlFor="filtro" className="">Filtrar por</label>
-                            <select name="filtro" id="filtro" className="bg-transparent ml-1 select-none cursor-pointer select-purple-icon">
-                                <option className="bg-black text-white text-center border-0 focus:border-0" value="">Status</option>
-                            </select>
+                        <div
+                            className="flex items-center font-semibold cursor-pointer relative"
+                            id="status-selector"
+                            onClick={toggleListaVisivel}
+                        >
+                            <span>Filtrar por Status</span>
+                            <IconChevronDown size={20} stroke={3} color='purple' className="ml-1" />
+
+                            {listaVisivel && (
+                                <ul className="absolute top-full left-0 w-32 bg-black/90 border border-zinc-900 p-2 rounded-md shadow-lg font-light text-xs font-inter z-10">
+                                    <li
+                                        className={`p-1 cursor-pointer hover:bg-zinc-700 rounded flex ${statusRegistro === 'todos' ? 'text-zinc-100' : 'text-zinc-400'}`}
+                                        onClick={() => handleSelectStatus('todos')}
+                                    >
+                                        <span className="mr-2 w-4">{statusRegistro === 'todos' && <IconCheck size={15} stroke={3} className="text-zinc-500" />}</span>
+                                        Todos
+                                    </li>
+                                    <li
+                                        className={`p-1 cursor-pointer hover:bg-zinc-700 rounded flex ${statusRegistro === 'pendente' ? 'text-zinc-100' : 'text-zinc-400'}`}
+                                        onClick={() => handleSelectStatus('pendente')}
+                                    >
+                                        <span className="mr-2 w-4">{statusRegistro === 'pendente' && <IconCheck size={15} stroke={3} className="text-zinc-500" />}</span>
+                                        Pendente
+                                    </li>
+                                    <li
+                                        className={`p-1 cursor-pointer hover:bg-zinc-700 rounded flex ${statusRegistro === 'consolidado' ? 'text-zinc-100' : 'text-zinc-400'}`}
+                                        onClick={() => handleSelectStatus('consolidado')}
+                                    >
+                                        <span className="mr-2 w-4">{statusRegistro === 'consolidado' && <IconCheck size={15} stroke={3} className="text-zinc-500" />}</span>
+                                        Consolidado
+                                    </li>
+                                    <li
+                                        className={`p-1 cursor-pointer hover:bg-zinc-700 rounded flex ${statusRegistro === 'cancelado' ? 'text-zinc-100' : 'text-zinc-400'}`}
+                                        onClick={() => handleSelectStatus('cancelado')}
+                                    >
+                                        <span className="mr-2 w-4">{statusRegistro === 'cancelado' && <IconCheck size={15} stroke={3} className="text-zinc-500" />}</span>
+                                        Cancelado
+                                    </li>
+                                </ul>
+                            )}
                         </div>
 
                         <Link

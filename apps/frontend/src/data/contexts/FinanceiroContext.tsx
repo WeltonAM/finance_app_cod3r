@@ -2,6 +2,7 @@ import { createContext, useCallback, useEffect, useState, ReactNode } from "reac
 import useApi from "../hooks/useApi";
 import { FinanceiroDTO } from "adapters";
 import useMensagens from "../hooks/useMensagens";
+import { StatusType } from "core";
 
 export interface FinanceiroContextProps {
     financeiros?: FinanceiroDTO[];
@@ -10,7 +11,8 @@ export interface FinanceiroContextProps {
     salvarFinanceiro: (financeiro: FinanceiroDTO) => Promise<FinanceiroDTO>;
     obterFinanceiroPorId: (id: string) => Promise<FinanceiroDTO | null>;
     excluirFinanceiro: (id: string) => Promise<void>;
-    // filtrarFinanceirosPorStatus: (status: StatusType) => FinanceiroDTO[];
+    filtrarFinanceirosPorStatus: (status: StatusType) => Promise<void>;
+    obterTodosFinanceiros: () => Promise<void>;
 }
 
 const FinanceiroContext = createContext<FinanceiroContextProps>({} as FinanceiroContextProps);
@@ -56,9 +58,20 @@ export function FinanceiroProvider({ children }: { children: ReactNode }) {
         obterTodosFinanceiros();
         setCarregando(false);
         return resposta.json;
-        // adicionarSucesso('Registro excluído com sucesso!', 5000);
 
     }, [httpDelete, financeiros]);
+
+    const filtrarFinanceirosPorStatus = useCallback(async (status: string) => {
+        setCarregando(true);
+        const resposta = await httpGet(`/financeiros/status/${status}`);
+        setFinanceiros(resposta.json);
+        setCarregando(false);
+        return resposta.json;
+    }, [httpGet]);
+
+    useEffect(() => {
+        obterTodosFinanceiros();
+    }, [obterTodosFinanceiros]);
 
     useEffect(() => {
         obterTodosFinanceiros();
@@ -73,7 +86,8 @@ export function FinanceiroProvider({ children }: { children: ReactNode }) {
                 salvarFinanceiro,
                 obterFinanceiroPorId,
                 excluirFinanceiro,
-                // filtrarFinanceirosPorStatus,
+                filtrarFinanceirosPorStatus,
+                obterTodosFinanceiros,
             }}
         >
             {children}

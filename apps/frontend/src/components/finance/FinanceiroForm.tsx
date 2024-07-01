@@ -5,7 +5,6 @@ import MenuStatus from "../shared/MenuStatus";
 import { FinanceiroDTO } from "adapters";
 import useFinanceiro from "@/data/hooks/useFinanceiro";
 import Link from "next/link";
-import useMensagens from "@/data/hooks/useMensagens";
 import { useParams, useRouter } from "next/navigation";
 import { formatarData } from "@/utils/formatarData";
 import { StatusType } from "core";

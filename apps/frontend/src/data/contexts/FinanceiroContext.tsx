@@ -1,6 +1,7 @@
 import { createContext, useCallback, useEffect, useState, ReactNode } from "react";
 import useApi from "../hooks/useApi";
 import { FinanceiroDTO } from "adapters";
+import useMensagens from "../hooks/useMensagens";
 
 export interface FinanceiroContextProps {
     financeiros?: FinanceiroDTO[];
@@ -19,6 +20,7 @@ export function FinanceiroProvider({ children }: { children: ReactNode }) {
     const [financeiro, setFinanceiro] = useState<FinanceiroDTO | null>(null);
     const [carregando, setCarregando] = useState<boolean>(true);
     const { httpGet, httpPost, httpDelete } = useApi();
+    const { adicionarSucesso } = useMensagens();
 
     const obterTodosFinanceiros = useCallback(async () => {
         setCarregando(true);
@@ -34,6 +36,7 @@ export function FinanceiroProvider({ children }: { children: ReactNode }) {
             const novoFinanceiro = response.json;
             obterTodosFinanceiros();
             setCarregando(false);
+            adicionarSucesso('Registro salvo com sucesso!', 5000);
             return novoFinanceiro;
         }
     }, [httpPost, financeiros]);
@@ -50,11 +53,11 @@ export function FinanceiroProvider({ children }: { children: ReactNode }) {
     const excluirFinanceiro = useCallback(async (id: string) => {
         setCarregando(true);
         const resposta = await httpDelete(`/financeiro/${id}`);
-        if (resposta.sucesso) {
-            obterTodosFinanceiros();
-            setCarregando(false);
-            return resposta.json;
-        }
+        obterTodosFinanceiros();
+        setCarregando(false);
+        return resposta.json;
+        // adicionarSucesso('Registro excluído com sucesso!', 5000);
+
     }, [httpDelete, financeiros]);
 
     useEffect(() => {

@@ -21,7 +21,6 @@ export default function FinanceiroForm() {
     const [financeiroId, setFinanceiroId] = useState('');
     const [modalAberto, setModalAberto] = useState(false);
     const { salvarFinanceiro, obterFinanceiroPorId, excluirFinanceiro } = useFinanceiro();
-    const { adicionarSucesso } = useMensagens();
     const router = useRouter();
     const { id } = useParams();
 
@@ -49,7 +48,7 @@ export default function FinanceiroForm() {
     };
 
     const handleClickSpan = () => {
-        inputRef.current?.click();
+        inputRef.current?.showPicker();
     };
 
     const handleSelectStatus = (status: string) => {
@@ -77,7 +76,6 @@ export default function FinanceiroForm() {
         const novoFinanceiro: FinanceiroDTO = await salvarFinanceiro(novoRegistro);
 
         if (novoFinanceiro) {
-            adicionarSucesso('Registro salvo com sucesso!', 5000);
             router.push('/inicio');
         }
     };
@@ -89,7 +87,6 @@ export default function FinanceiroForm() {
     const handleConfirmarExclusao = async () => {
         await excluirFinanceiro(id as string);
 
-        adicionarSucesso('Registro excluído com sucesso!', 5000);
         router.push('/inicio');
     };
 

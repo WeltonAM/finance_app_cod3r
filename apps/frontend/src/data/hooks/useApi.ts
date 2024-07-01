@@ -31,7 +31,6 @@ export default function useApi() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res);
       const json = await res.json();
       renderizarErrosSeExistir(json.erros);
 

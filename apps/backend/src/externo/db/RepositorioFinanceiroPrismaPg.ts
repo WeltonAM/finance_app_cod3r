@@ -10,14 +10,36 @@ export default class RepositorioFinanceiroPrismaPg
     this.prisma = new PrismaClient();
   }
 
-  async salvar(financeiro: Financeiro): Promise<Financeiro> {
+  async salvar(financeiroRegistro: Financeiro): Promise<Financeiro> {
+    console.log(financeiroRegistro, "PRISMA");
+
     const novoFinanceiro = await this.prisma.financeiro.upsert({
-      where: { id: financeiro.id.valor ?? -1 },
-      update: financeiro.props,
-      create: financeiro.props as any,
+      where: { id: financeiroRegistro.props.id },
+      update: {
+        tipo: financeiroRegistro.props.tipo,
+        valor: financeiroRegistro.props.valor,
+        status: financeiroRegistro.props.status,
+        data: financeiroRegistro.props.data,
+        descricao: financeiroRegistro.props.descricao,
+      },
+      create: {
+        id: financeiroRegistro.props.id,
+        tipo: financeiroRegistro.props.tipo as any,
+        valor: financeiroRegistro.props.valor as any,
+        status: financeiroRegistro.props.status as any,
+        data: financeiroRegistro.props.data as any,
+        descricao: financeiroRegistro.props.descricao as any,
+      },
     });
 
-    return new Financeiro(novoFinanceiro);
+    return new Financeiro({
+      id: novoFinanceiro.id,
+      tipo: novoFinanceiro.tipo,
+      valor: novoFinanceiro.valor,
+      status: novoFinanceiro.status,
+      data: novoFinanceiro.data,
+      descricao: novoFinanceiro.descricao,
+    });
   }
 
   async obterPorId(id: string): Promise<Financeiro | null> {

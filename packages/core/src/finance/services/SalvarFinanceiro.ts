@@ -20,6 +20,7 @@ export default class SalvarFinanceiro
     const descricao = new Descricao(dto.descricao!, "descricao", "financeiro");
 
     const financeiro = new Financeiro({
+      id: dto.id,
       tipo: tipo.valor,
       valor: valor.valor,
       status: status.valor,

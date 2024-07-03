@@ -22,7 +22,6 @@ export default class SalvarFinanceiroController {
         descricao: req.body.descricao,
       };
 
-      console.log(financeiroProps, "API");
       const financeiro = await this.casoDeUso.executar(financeiroProps);
 
       res.json(financeiro);

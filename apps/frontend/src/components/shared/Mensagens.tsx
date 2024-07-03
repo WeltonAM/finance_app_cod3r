@@ -14,6 +14,7 @@ const codigoParaMensagem: CodigoParaMensagem = {
     EMAIL_INVALIDO: "Email inválido",
     ERRO_DESCONHECIDO: "Atualize os dados e tente novamente",
     STATUS_INVALIDO: "Status inválido",
+    USUARIO_NAO_EXISTE: "Credenciais inválidas",
 };
 
 export default function Mensagens() {

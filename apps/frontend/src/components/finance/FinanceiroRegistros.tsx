@@ -19,7 +19,7 @@ export default function FinanceiroRegistros() {
 
     const handleSelectStatus = (status: StatusType | 'todos') => {
         setStatusRegistro(status);
-        setListaVisivel(false); // Fechar a lista após a seleção
+        setListaVisivel(false);
     };
 
     const toggleListaVisivel = () => {

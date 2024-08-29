@@ -18,11 +18,11 @@ import RegistrarUsuarioController from "./adapters/usuario/RegistrarUsuarioContr
 import RepositorioUsuarioPrismaPg from "./externo/db/RepositorioUsuarioPrismaPg";
 import RepositorioFinanceiroPrismaPg from "./externo/db/RepositorioFinanceiroPrismaPg";
 import UsuarioMiddleware from "./adapters/usuario/UsuarioMiddleware";
-import ObterTodosFinanceiroController from "./adapters/finance/ObterTodosFinanceiroController";
-import SalvarFinanceiroController from "./adapters/finance/SalvarFinanceiroController";
-import ObterFinanceiroPorIdController from "./adapters/finance/ObterFinanceiroPorIdController";
-import ExcluirFinanceiroController from "./adapters/finance/ExcluirFinanceiroController";
-import FiltrarFinanceiroPorStatusController from "./adapters/finance/FiltrarFinanceiroPorStatusController";
+import ObterTodosFinanceiroController from "./adapters/financeiro/ObterTodosFinanceiroController";
+import SalvarFinanceiroController from "./adapters/financeiro/SalvarFinanceiroController";
+import ObterFinanceiroPorIdController from "./adapters/financeiro/ObterFinanceiroPorIdController";
+import ExcluirFinanceiroController from "./adapters/financeiro/ExcluirFinanceiroController";
+import FiltrarFinanceiroPorStatusController from "./adapters/financeiro/FiltrarFinanceiroPorStatusController";
 
 // ------------------------------- Dependências
 

@@ -1,6 +1,6 @@
 'use client'
 
-import FinanceiroVisualizacao from '@/components/finance/FinanceiroVisualizacao';
+import FinanceiroVisualizacao from '@/components/financeiro/FinanceiroVisualizacao';
 
 export default function VisualizarFinanceiro() {
     return (

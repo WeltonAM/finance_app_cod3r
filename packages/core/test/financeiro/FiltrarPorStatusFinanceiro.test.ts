@@ -1,5 +1,5 @@
 import { StatusType } from "../../src";
-import FiltrarPorStatusFinanceiro from "../../src/finance/services/FiltrarPorStatusFinanceiro";
+import FiltrarPorStatusFinanceiro from "../../src/financeiro/services/FiltrarPorStatusFinanceiro";
 import FinanceiroBuilder from "../data/FinanceiroBuilder";
 import RepositorioFinanceiroMock from "../mock/RepositorioFinanceiroMock";
 

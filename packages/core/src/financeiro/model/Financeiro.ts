@@ -4,6 +4,7 @@ import Valor from "../../shared/Valor";
 import Tipo, { TipoType } from "../../shared/Tipo";
 import Status, { StatusType } from "../../shared/Status";
 import Entidade, { EntidadeProps } from "../../shared/Entidade";
+import { Usuario } from "../..";
 
 export interface FinanceiroProps extends EntidadeProps {
   id?: string;
@@ -12,6 +13,7 @@ export interface FinanceiroProps extends EntidadeProps {
   status?: string;
   data?: string;
   descricao?: string;
+  usuario?: Usuario;
 }
 
 export default class Financeiro extends Entidade<Financeiro, FinanceiroProps> {
@@ -20,6 +22,7 @@ export default class Financeiro extends Entidade<Financeiro, FinanceiroProps> {
   readonly status: Status;
   readonly data: Data;
   readonly descricao: Descricao;
+  readonly usuario: Partial<Usuario>;
 
   constructor(props: FinanceiroProps) {
     super(props);
@@ -32,5 +35,6 @@ export default class Financeiro extends Entidade<Financeiro, FinanceiroProps> {
     );
     this.data = new Data(props.data!, "data", "financeiro");
     this.descricao = new Descricao(props.descricao!, "descricao", "financeiro");
+    this.usuario = props.usuario!.semSenha();
   }
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import FinanceiroForm from "@/components/finance/FinanceiroForm";
+import FinanceiroForm from "@/components/financeiro/FinanceiroForm";
 
 export default function Registro() {
 

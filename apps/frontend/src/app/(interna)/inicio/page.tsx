@@ -1,6 +1,6 @@
 'use client'
 
-import FinanceiroRegistros from '@/components/finance/FinanceiroRegistros';
+import FinanceiroRegistros from '@/components/financeiro/FinanceiroRegistros';
 
 export default function Inicio() {
     return (

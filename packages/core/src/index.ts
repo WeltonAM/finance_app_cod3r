@@ -1,2 +1,2 @@
 export * from "./usuario";
-export * from "./finance";
+export * from "./financeiro";

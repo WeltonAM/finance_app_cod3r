@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import FinanceiroItem from "@/components/finance/FinanceiroItem";
+import FinanceiroItem from "@/components/financeiro/FinanceiroItem";
 import Button from "@/components/shared/Button";
 import useFinanceiro from "@/data/hooks/useFinanceiro";
 import useMediaQuery from "@/data/hooks/useMediaQueries";

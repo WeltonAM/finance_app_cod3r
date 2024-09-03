@@ -7,7 +7,12 @@ test("deve excluir um financeiro", async () => {
   const casoDeUso = new ExcluirFinanceiro(repo);
   const financeiro = FinanceiroBuilder.criar().agora();
 
-  const resultado = await casoDeUso.excluir(financeiro.id.valor);
-  console.log(resultado);
+  const dto = {
+    id: financeiro.id.valor,
+    usuarioEmail: "usuario@email.com",
+  };
+
+  const resultado = await casoDeUso.excluir(dto);
+
   expect(resultado).toBeNull();
 });

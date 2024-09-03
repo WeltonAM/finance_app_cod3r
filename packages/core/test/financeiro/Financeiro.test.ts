@@ -7,4 +7,5 @@ test("Deve criar um financeiro", () => {
   expect(financeiro.status.valor).toBe("pendente");
   expect(financeiro.data.valor).toBeDefined();
   expect(financeiro.descricao.valor).toBe("Descrição padrão");
+  expect(financeiro.usuarioEmail.valor).toBe("usuario@email.com");
 });

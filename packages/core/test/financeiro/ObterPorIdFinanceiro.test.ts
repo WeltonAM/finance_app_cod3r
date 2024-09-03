@@ -7,9 +7,16 @@ test("Deve obter um financeiro por id", async () => {
   const casoDeUso = new ObterPorIdFinanceiro(repo);
 
   const financeiro = FinanceiroBuilder.criar().agora();
+  const usuarioEmail = "usuario@email.com";
+
   await repo.salvar(financeiro);
 
-  const resultado = await casoDeUso.executar(financeiro.id.valor);
+  const dto = {
+    id: financeiro.id.valor,
+    usuarioEmail,
+  };
+
+  const resultado = await casoDeUso.executar(dto);
 
   expect(resultado?.id.valor).toBe(financeiro.id.valor);
 });

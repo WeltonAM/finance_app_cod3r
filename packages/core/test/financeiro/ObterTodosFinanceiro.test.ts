@@ -12,8 +12,7 @@ test("Deve obter todos os financeiros", async () => {
   await repo.salvar(financeiro1);
   await repo.salvar(financeiro2);
 
-  const resultado = await casoDeUso.executar();
+  const resultado = await casoDeUso.executar("usuario@email.com");
 
-  console.log(resultado);
   expect(resultado).toHaveLength(2);
 });

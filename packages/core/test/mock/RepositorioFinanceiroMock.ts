@@ -23,8 +23,10 @@ export default class RepositorioFinanceiroMock
     return this.financeiros.find((f) => f.id.valor === id) ?? null;
   }
 
-  async obterPorTodos(): Promise<Financeiro[]> {
-    return this.financeiros;
+  async obterPorTodos(usuarioEmail: string): Promise<Financeiro[]> {
+    return this.financeiros.filter(
+      (f) => f.usuarioEmail.valor === usuarioEmail
+    );
   }
 
   async excluir(id: string): Promise<Financeiro | null> {

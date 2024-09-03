@@ -12,11 +12,22 @@ export default class FinanceiroBuilder {
       status: "pendente" as StatusType,
       data: new Date().toISOString(),
       descricao: "Descrição padrão",
+      usuarioEmail: "usuario@email.com",
     });
   }
 
   comId(id: string): FinanceiroBuilder {
     this.props.id = id;
+    return this;
+  }
+
+  comUsuarioEmail(usuarioEmail: string): FinanceiroBuilder {
+    this.props.usuarioEmail = usuarioEmail;
+    return this;
+  }
+
+  semUsuarioEmail(): FinanceiroBuilder {
+    this.props.usuarioEmail = undefined as any;
     return this;
   }
 

@@ -18,6 +18,7 @@ export default class SalvarFinanceiro
     const status = new Status(dto.status as StatusType);
     const data = new Data(dto.data!, "data", "financeiro");
     const descricao = new Descricao(dto.descricao!, "descricao", "financeiro");
+    const usuarioEmail = dto.usuarioEmail!;
 
     const financeiro = new Financeiro({
       id: dto.id,
@@ -26,6 +27,7 @@ export default class SalvarFinanceiro
       status: status.valor,
       data: data.valor,
       descricao: descricao.valor,
+      usuarioEmail: usuarioEmail,
     });
 
     await this.repo.salvar(financeiro);

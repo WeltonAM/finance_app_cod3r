@@ -20,6 +20,7 @@ export default class SalvarFinanceiroController {
         status: req.body.status,
         data: req.body.data,
         descricao: req.body.descricao,
+        usuarioEmail: req.body.usuarioEmail,
       };
 
       const financeiro = await this.casoDeUso.executar(financeiroProps);

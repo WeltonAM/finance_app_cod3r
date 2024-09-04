@@ -8,22 +8,27 @@ datasource db {
 }
 
 model Usuario {
-    id        String   @id @default(uuid()) @db.Uuid
-    nome      String
-    email     String   @unique
-    senha     String
-    avatar    String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id          String       @id @default(uuid()) @db.Uuid
+    nome        String
+    email       String       @unique
+    senha       String
+    avatar      String
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+    financeiros Financeiro[]
 }
 
 model Financeiro {
-    id        String   @id @default(uuid()) @db.Uuid
-    tipo      String
-    valor     String
-    status    String
-    data      String
-    descricao String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id           String   @id @default(uuid()) @db.Uuid
+    tipo         String
+    valor        String
+    status       String
+    data         String
+    descricao    String
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    usuarioEmail String
+    usuario      Usuario  @relation(fields: [usuarioEmail], references: [email])
+
+    @@index([usuarioEmail])
 }

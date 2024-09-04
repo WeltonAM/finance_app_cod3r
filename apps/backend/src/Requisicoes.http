@@ -1,0 +1,40 @@
+###
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "email": "visitante@mail.com",
+    "senha": "#Senha123"
+}
+
+###
+POST http://localhost:4000/registrar
+Content-Type: application/json
+
+{
+    "nome": "Visitante Admin",
+    "email": "visitante@mail.com",
+    "senha": "#Senha123"
+}
+
+###
+GET http://localhost:4000/financeiros/visitante@mail.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEzZTdlNDJhLWE1ZjUtNDZhZi1iYzFlLWQ5OTYyZWVmNTFkYiIsIm5vbWUiOiJWaXNpdGFudGUgQWRtaW4iLCJlbWFpbCI6InZpc2l0YW50ZUBtYWlsLmNvbSIsImlhdCI6MTcyNTQxMjQ1NSwiZXhwIjoxNzI2NzA4NDU1fQ.rt75iXZPx2TaMHjnu6DHoAevqicgwFlRUllZSYKHUv4
+
+###
+POST http://localhost:4000/financeiros
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEzZTdlNDJhLWE1ZjUtNDZhZi1iYzFlLWQ5OTYyZWVmNTFkYiIsIm5vbWUiOiJWaXNpdGFudGUgQWRtaW4iLCJlbWFpbCI6InZpc2l0YW50ZUBtYWlsLmNvbSIsImlhdCI6MTcyNTQxMjQ1NSwiZXhwIjoxNzI2NzA4NDU1fQ.rt75iXZPx2TaMHjnu6DHoAevqicgwFlRUllZSYKHUv4
+Content-Type: application/json
+
+{
+    "tipo": "despesa",
+    "valor": "10",
+    "status": "pendente",
+    "data": "2024-09-04T01:55:15.282Z",
+    "descricao": "Descrição padrão",
+    "usuarioEmail": "visitante@mail.com"
+}
+
+###
+GET http://localhost:4000/financeiro/09614d84-b88e-424b-89f6-70fcd7921ec4/visitante@mail.com
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEzZTdlNDJhLWE1ZjUtNDZhZi1iYzFlLWQ5OTYyZWVmNTFkYiIsIm5vbWUiOiJWaXNpdGFudGUgQWRtaW4iLCJlbWFpbCI6InZpc2l0YW50ZUBtYWlsLmNvbSIsImlhdCI6MTcyNTQxMjQ1NSwiZXhwIjoxNzI2NzA4NDU1fQ.rt75iXZPx2TaMHjnu6DHoAevqicgwFlRUllZSYKHUv4

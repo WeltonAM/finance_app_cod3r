@@ -8,13 +8,19 @@ export default class ExcluirFinanceiroController {
     readonly casoDeUso: ExcluirFinanceiro,
     ...middleware: any[]
   ) {
-    servidor.delete("/financeiro/:id", ...middleware, async (req, res) => {
-      try {
-        const financeiro = await casoDeUso.excluir(req.params.id as string);
-        res.status(200).json(financeiro?.props);
-      } catch (e: any) {
-        res.status(400).json({ erros: Erros.tratar(e) });
+    servidor.delete(
+      "/financeiro/:id/:usuarioEmail",
+      ...middleware,
+      async (req, res) => {
+        try {
+          const { id, usuarioEmail } = req.params;
+
+          const financeiro = await casoDeUso.excluir({ id, usuarioEmail });
+          res.status(200).json(financeiro?.props);
+        } catch (e: any) {
+          res.status(400).json({ erros: Erros.tratar(e) });
+        }
       }
-    });
+    );
   }
 }

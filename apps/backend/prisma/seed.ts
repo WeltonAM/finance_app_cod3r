@@ -26,6 +26,7 @@ async function seed() {
     ]),
     data: faker.date.past().toISOString(),
     descricao: faker.lorem.sentence(30),
+    usuarioEmail: usuario.email,
   }));
 
   await prisma.financeiro.createMany({ data: financeiros });

@@ -19,6 +19,7 @@ export default class RepositorioFinanceiroPrismaPg
         status: financeiroRegistro.props.status,
         data: financeiroRegistro.props.data,
         descricao: financeiroRegistro.props.descricao,
+        usuarioEmail: financeiroRegistro.props.usuarioEmail,
       },
       create: {
         id: financeiroRegistro.props.id,
@@ -27,6 +28,7 @@ export default class RepositorioFinanceiroPrismaPg
         status: financeiroRegistro.props.status as any,
         data: financeiroRegistro.props.data as any,
         descricao: financeiroRegistro.props.descricao as any,
+        usuarioEmail: financeiroRegistro.props.usuarioEmail as any,
       },
     });
 
@@ -37,28 +39,48 @@ export default class RepositorioFinanceiroPrismaPg
       status: novoFinanceiro.status,
       data: novoFinanceiro.data,
       descricao: novoFinanceiro.descricao,
+      usuarioEmail: novoFinanceiro.usuarioEmail,
     });
   }
 
-  async obterPorId(id: string): Promise<Financeiro | null> {
+  async obterPorId(
+    id: string,
+    usuarioEmail: string
+  ): Promise<Financeiro | null> {
     const financeiro = await this.prisma.financeiro.findUnique({
-      where: { id },
+      where: {
+        id,
+        usuarioEmail,
+      },
     });
 
     return financeiro ? new Financeiro(financeiro) : null;
   }
 
-  async obterPorTodos(): Promise<Financeiro[]> {
+  async obterPorTodos(usuarioEmail: string): Promise<any[]> {
     const financeiros = await this.prisma.financeiro.findMany({
-      orderBy: { data: "desc" },
+      where: {
+        usuarioEmail,
+      },
+      orderBy: {
+        data: "desc",
+      },
     });
 
-    return financeiros.map((f: any) => new Financeiro(f));
+    return financeiros.map((f: any) => ({
+      id: f.id,
+      tipo: f.tipo,
+      valor: f.valor,
+      status: f.status,
+      data: f.data,
+      descricao: f.descricao,
+      usuarioEmail: f.usuarioEmail,
+    }));
   }
 
-  async excluir(id: string): Promise<Financeiro | null> {
+  async excluir(id: string, usuarioEmail: string): Promise<Financeiro | null> {
     const financeiro = await this.prisma.financeiro.delete({
-      where: { id },
+      where: { id, usuarioEmail },
     });
 
     return financeiro ? new Financeiro(financeiro) : null;

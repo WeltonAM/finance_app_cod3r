@@ -4,7 +4,6 @@ import Valor from "../../shared/Valor";
 import Tipo, { TipoType } from "../../shared/Tipo";
 import Status, { StatusType } from "../../shared/Status";
 import Entidade, { EntidadeProps } from "../../shared/Entidade";
-import { Usuario } from "../..";
 import Email from "../../shared/Email";
 
 export interface FinanceiroProps extends EntidadeProps {

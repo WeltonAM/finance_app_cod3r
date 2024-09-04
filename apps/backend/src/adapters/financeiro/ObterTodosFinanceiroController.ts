@@ -8,13 +8,19 @@ export default class ObterTodosFinanceiroController {
     readonly casoDeUso: ObterTodosFinanceiro,
     ...middleware: any[]
   ) {
-    servidor.get("/financeiros", ...middleware, async (req, res) => {
-      try {
-        const financeiros = await casoDeUso.executar();
-        res.status(200).json(financeiros);
-      } catch (e: any) {
-        res.status(400).json({ erros: Erros.tratar(e) });
+    servidor.get(
+      "/financeiros/:usuarioEmail",
+      ...middleware,
+      async (req, res) => {
+        try {
+          const usuarioEmail = req.params.usuarioEmail;
+
+          const financeiros = await casoDeUso.executar(usuarioEmail);
+          res.status(200).json(financeiros);
+        } catch (e: any) {
+          res.status(400).json({ erros: Erros.tratar(e) });
+        }
       }
-    });
+    );
   }
 }
